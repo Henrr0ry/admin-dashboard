@@ -4,7 +4,7 @@
         <title>Avanz Group s.r.o - Admin</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="admin-style.css?v=1">
+        <link rel="stylesheet" href="admin-style.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     </head>
     <?php
@@ -18,6 +18,12 @@
             }
         }
     ?>
+    <?php
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
+?>
+
     <body>
         <p class="sign">Website by Henrr0ry</p>
         <div class="login">
