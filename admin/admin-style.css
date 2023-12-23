@@ -1,0 +1,261 @@
+:root {
+    --main: lime;
+    --second: green;
+    --shadow: gray;
+}
+html {
+    font-size: 20px;
+    background: url(../image/admin-back.png);
+    box-sizing: border-box;
+    font-family: monospace;
+}
+body {
+    margin: 0;
+}
+/*LOGIN*/
+.login {
+    width: 20rem;
+    height: 22rem;
+    background-color: white;
+    border: 5px solid var(--main);
+    border-radius: 20px;
+    text-align: center;
+    display: block;
+    margin: 3rem auto 0 auto;
+}
+.login div {
+    width: fit-content;
+    margin: auto;
+}
+h2 {
+    font-size: 3rem;
+}
+h3 {
+    font-size: 1.5rem;
+    color: var(--main);
+    margin: 1rem 0 0 1rem;
+} 
+.login h3 {
+    margin: 2rem auto 1rem auto;
+    font-size: 1.75rem;
+    color: var(--main);
+}
+.login label {
+    color: var(--main);
+    font-size: 1.25rem;
+    float: left;
+    margin-top: 1.5rem;
+    padding-left: 1.5rem;
+}
+#showpasswd {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid var(--main);
+}
+.nomargin {
+    margin: 0 !important;
+}
+.login input[type="text"], .login input[type="password"] {
+    border: 3px solid var(--main);
+    border-radius: 5px;
+    font-size: 1.25rem;
+    color: var(--main);
+    width: 85%;
+}
+.login button {
+    font-size: 1.25rem;
+    color: white;
+    background: var(--main);
+    border: 0;
+    border-radius: 5px;
+    padding: 5px;
+    width: calc(85% + 10px);
+    margin-top: 1rem;
+}
+/*ADMIN DASHBOARD*/
+.dashboard {
+    width: 70%;
+    height: 85vh;
+    background-color: var(--main);
+    border: 5px solid var(--main);
+    border-radius: 20px;
+    text-align: center;
+    margin: 3rem auto 0 auto;
+}
+header {
+    font-size: 3rem;
+    color: var(--main);
+    background: white;
+    border-radius: 20px;
+}
+/*MAIN*/
+section {
+    width: calc(100% - 10px);
+    height: calc(100% - 6rem);
+    background-color: white;
+    border: 5px solid var(--main);
+    border-radius: 20px;
+    text-align: center;
+    margin-top: 2rem;
+    overflow-y: scroll;
+}
+/*TOP*/
+.side {
+    float: left;
+    margin: 5px;
+    width: calc(50% - 10px);
+    height: 20rem;
+    margin-bottom: 2rem;
+    text-align: left;
+}
+textarea {
+    font-size: 0.5rem;
+    color: white;
+    background: black;
+    border: none;
+    margin: 0;
+    width: calc(100% - 2px);
+    height: 18rem;
+    resize: none;
+}
+/*TABLE*/
+table {
+    width: calc(100% - 21px);
+    margin: 10px;
+    background: var(--main);
+    border-spacing: 0;
+    border: 0.3rem solid var(--main);
+    border-radius: 0.5rem;
+}
+thead {
+    background: var(--main);
+}
+tbody {
+    background: white;
+}
+tbody tr:nth-child(even) {
+    background: #ddd;
+}
+table img {
+    width: 1.5rem;
+    height: auto;
+}
+.refresh {
+    animation: 1s rotate;
+}
+.refresh:active {
+    animation: none;
+}
+@keyframes rotate {
+    0% {
+        rotate: 0deg;
+    }
+    100% {
+        rotate: -360deg;
+    }
+}
+.icon-cell {
+  text-align: right;
+  white-space: nowrap;
+  width: calc(1.5rem + 10px);
+}
+.icon-cell img {
+    margin: 5px;
+}
+/*DIALOG*/
+dialog {
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    background: #33333355;
+}
+dialog .dialog {
+    border: 3px solid var(--second);
+    border-radius: 20px;
+    background: white;
+    width: 30rem;
+    height: fit-content;
+    margin: 20% auto 0 auto;
+}
+dialog h3 {
+    float: left;
+}
+#inputContainer, #addContainer {
+    text-align: right;
+    margin-right: 4rem;
+    margin-top: 2rem;
+}
+dialog label, dialog input[type="text"] {
+    font-size: 1rem;
+    margin: 5px;
+}
+dialog img {
+    float: right;
+    margin: 1rem;
+    width: 1.5rem;
+    height: auto;
+}
+.savebtn {
+    background-color: var(--main);
+    color: white;
+    font-family: monospace;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    float: right;
+    margin: 1rem;
+    padding: 5px 1rem 5px 1rem;
+}
+.savebtn.red {
+    background: red;
+}
+div.upload {
+    width: 24rem;
+    height: 7rem;
+    margin: 3rem 3rem 0 3rem;
+    background: #eee;
+    border: 3px dashed #4d4d4d;
+}
+.upload p {
+    text-align: center;
+    transform: translateY(-1rem);
+}
+img.upload {
+    width: 2rem;
+    height: 2rem;
+    margin: 2rem calc(50% - 1rem);
+}
+/*FOOTER*/
+.sign {
+    color: #00cc00;
+    font-size: 15px;
+    font-family: monospace;
+    padding: 10px;
+    margin: 0;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+/*RESPONSING*/
+@media (max-width:1400px) {
+    html {font-size: 18px;}
+}
+@media (max-width:1025px) {
+    html {font-size: 16px;}
+    .side {min-width: calc(100% - 10px);}
+}
+@media (max-width:801px) {
+    html {font-size: 14px;} 
+}
+@media (max-width:600px) {
+    html {font-size: 13px;}
+    .dashboard {width: calc(100% - 10px); height: calc(100vh - 10px);margin: 0;}
+}
+@media (max-width:480px) {
+    html {font-size: 12px;}
+}
+@media (max-width:320px) {
+    html {font-size: 10px;}
+}
