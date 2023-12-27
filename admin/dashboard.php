@@ -1,20 +1,12 @@
 <?php 
-    $N = "admin";
-    $P = "$2y$10$.Zc3/IHeWpR6EIXpin/kX.F7GN6nGhdFyNtp23oSw6JVQBii1D.y6";
-
+    include "config.php";
     if (isset($_POST["name"]) && isset($_POST["passwd"])) {
         if (strcmp($_POST["name"], $N) == 0 && password_verify($_POST["passwd"], $P)) {
 ?>
-<?php
-header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-header('Cache-Control: post-check=0, pre-check=0', false);
-header('Pragma: no-cache');
-?>
-
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Avanz Group s.r.o - Admin</title>
+        <title>Admin Dashboard</title>
         <meta http-equiv="refresh" content="600">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,19 +17,22 @@ header('Pragma: no-cache');
         <p class="sign">Website by Henrr0ry</p>
         <div class="dashboard">
             <header>Admin Dashboard</header>
+            <div class="log-panel">
+                <img src="<?php echo $profile ?>" class="profile-pic"><h4 class="profile-name"><?php echo $display ?></h4>
+            </div>
             <section>
-                <h3>Soubory a Logy</h3>
+                <h3>Files and Logs</h3>
                 <div class="side">
                     <table>
                         <thead>
                             <tr>
-                                <th colspan="20"><center>Soubory</center></th>
+                                <th colspan="20"><center>Files</center></th>
                             </tr>
                             <tr>
-                                <th>Jméno</th>
-                                <th>velikost</th>
-                                <th class="icon-cell"><img class="refresh" src="../admin-image/refresh.png" onclick="loadFiles()" alt="Znovu načíst" title="Znovu načíst" draggable=false></th>
-                                <th class="icon-cell"><img src="../admin-image/upload.png" onclick='document.getElementById("upload").showModal();' alt="Nahrát" title="Nahrát" draggable=false></th>
+                                <th>Name</th>
+                                <th>Size</th>
+                                <th class="icon-cell"><img class="refresh" src="../admin-image/refresh.png" onclick="loadFiles()" alt="Refresh" title="Refresh" draggable=false></th>
+                                <th class="icon-cell"><img src="../admin-image/upload.png" onclick='document.getElementById("upload").showModal();' alt="Upload" title="Upload" draggable=false></th>
                             </tr>
                         </thead>
                         <tbody id="fileList">
@@ -48,7 +43,7 @@ header('Pragma: no-cache');
                     <table>
                         <thead>
                             <tr>
-                                <th>Historie</th>
+                                <th>History</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,14 +55,8 @@ header('Pragma: no-cache');
                         </tbody>
                     </table>
                 </div>
-                <h3>MySQL Databáze</h3>
+                <h3>MySQL Database</h3>
                 <?php
-                    $conn = new mysqli('localhost', 'root', '', 'pumpa_db');
-                    if ($conn->connect_error) {
-                        echo "<h1>Connection Error!</h1>";
-                        die("Připojení selhalo: " . $conn->connect_error);
-                    }
-                    
                     $tablesQuery = "SHOW TABLES";
                     $tablesResult = $conn->query($tablesQuery);
 
@@ -91,8 +80,8 @@ header('Pragma: no-cache');
                                 echo "Table not have any column!";
                             }
                             $columnNames .= "]";
-                            echo "<th class=\"icon-cell\"><img class=\"refresh\" src=\"../admin-image/refresh.png\" onclick=\"loadData('$tableName')\" alt=\"Znovu Načíst\" title=\"Znovu Načíst\" draggable=false></th>";
-                            echo "<th class=\"icon-cell\"><img src=\"../admin-image/add.png\" onclick=\"addeditRow('$tableName', $columnNames)\" alt=\"Přidat\" title=\"Přidat\" draggable=false></th>";
+                            echo "<th class=\"icon-cell\"><img class=\"refresh\" src=\"../admin-image/refresh.png\" onclick=\"loadData('$tableName')\" alt=\"Refresh\" title=\"Refresh\" draggable=false></th>";
+                            echo "<th class=\"icon-cell\"><img src=\"../admin-image/add.png\" onclick=\"addeditRow('$tableName', $columnNames)\" alt=\"Add\" title=\"Add\" draggable=false></th>";
                             echo "</tr></thead><tbody id=\"$tableName\"></tbody></table>";
                         }
                     } else {
@@ -103,36 +92,36 @@ header('Pragma: no-cache');
         </div>
         <dialog id="edit">
             <div class="dialog">
-                <h3>Upravit data</h3>
-                <img src="../admin-image/close.png" onclick="document.getElementById('edit').close()" alt="Zavřít" title="Zavřít" draggable=false><br>
+                <h3>Edit data</h3>
+                <img src="../admin-image/close.png" onclick="document.getElementById('edit').close()" alt="Close" title="Close" draggable=false><br>
                 <data id="edittable" value=""></data>
                 <data id="editid" value=""></data>
                 <div id="inputContainer"></div>
-                <button onclick="saveRow()" class="savebtn">Uložit</button> <br> <br> <br>
+                <button onclick="saveRow()" class="savebtn">Save</button> <br> <br> <br>
             </div>
         </dialog>
         <dialog id="add">
             <div class="dialog">
-                <h3>Přidat data</h3>
-                <img src="../admin-image/close.png" onclick="document.getElementById('add').close()" alt="Zavřít" title="Zavřít" draggable=false><br>
+                <h3>Add data</h3>
+                <img src="../admin-image/close.png" onclick="document.getElementById('add').close()" alt="Close" title="Close" draggable=false><br>
                 <data id="addtable" value=""></data>
                 <div id="addContainer"></div>
-                <button onclick="addRow()" class="savebtn">Uložit</button> <br> <br> <br>
+                <button onclick="addRow()" class="savebtn">Save</button> <br> <br> <br>
             </div>
         </dialog>
         <dialog id="delete" >
             <div class="dialog">
-                <h3>Opravdu chcete vymazat tento soubor?</h3>
-                <button class="savebtn" id="cancelDelete">Ne, ponechat</button>
-                <button class="savebtn red" id="confirmDelete">Ano, vymazat</button> <br> <br> <br> <br> <br> <br> <br>
+                <h3>Do you realy want to delete this data?</h3>
+                <button class="savebtn" id="cancelDelete">No, keep it</button>
+                <button class="savebtn red" id="confirmDelete">Yes, delete</button> <br> <br> <br> <br> <br> <br> <br>
             </div>
         </dialog>
         <dialog id="upload">
             <div class="dialog">
-                <h3>Nahrajte Soubor</h3>
-                <img src="../admin-image/close.png" onclick="document.getElementById('upload').close()" alt="Zavřít" title="Zavřít" draggable=false><br>
+                <h3>Upload a file</h3>
+                <img src="../admin-image/close.png" onclick="document.getElementById('upload').close()" alt="Close" title="Close" draggable=false><br>
                 <div id="dragfile" class="upload" ondragover="allowDrop(event)" ondrop="drop(event)"><img class="upload" src="../admin-image/upload.png"><p><input id="file" type="file"></p></div>
-                <button class="savebtn" onclick="saveFileToServer()">Nahrát</button> <br> <br> <br>
+                <button class="savebtn" onclick="saveFileToServer()">Upload</button> <br> <br> <br>
             </div>
         </dialog>
         <script>
@@ -153,8 +142,8 @@ header('Pragma: no-cache');
                         for (var key in row) {
                             newRow.innerHTML += "<td>" + row[key] + "</td>";
                         }
-                        newRow.innerHTML += "<td><img src=\"..\/admin-image\/edit.png\" onclick='editRow(\"" + tableName + "\"," + row.ID + ", " + JSON.stringify(row) + ")' alt=\"edit\" title=\"Upravit\" draggable=false></td>";
-                        newRow.innerHTML += "<td><img src=\"..\/admin-image\/delete.png\" onclick='deleteRow(\"" + tableName + "\", " + row.ID + ")' alt=\"Delete\" title=\"Vymazat\" draggable=false></td>";
+                        newRow.innerHTML += "<td><img src=\"..\/admin-image\/edit.png\" onclick='editRow(\"" + tableName + "\"," + row.ID + ", " + JSON.stringify(row) + ")' alt=\"edit\" title=\"Edit\" draggable=false></td>";
+                        newRow.innerHTML += "<td><img src=\"..\/admin-image\/delete.png\" onclick='deleteRow(\"" + tableName + "\", " + row.ID + ")' alt=\"Delete\" title=\"Delete\" draggable=false></td>";
                         tableBody.appendChild(newRow);
                     });
                 }
@@ -319,9 +308,9 @@ header('Pragma: no-cache');
                             var allText = rawFile.responseText;
                             document.getElementById("log").innerHTML = allText;
                         } else if (rawFile.status === 404) {
-                            document.getElementById("log").innerHTML = "Soubor nebyl nalezen.";
+                            document.getElementById("log").innerHTML = "File not found!";
                         } else {
-                            document.getElementById("log").innerHTML = "Chyba při načítání souboru.";
+                            document.getElementById("log").innerHTML = "Error load file!";
                         }
                     }
                 }
@@ -352,7 +341,7 @@ header('Pragma: no-cache');
                         var newRow = document.createElement("tr");
                         newRow.innerHTML = "<td><a target=\"_blank\"href=\"" + row.link + "\">" + row.name + "</a></td><td>" + row.size + "</td>";
                         newRow.innerHTML += "<td></td>";
-                        newRow.innerHTML += "<td><img src=\"..\/admin-image\/delete.png\" onclick=\"deleteFileFromServer(\'" + row.name + "\')\" alt=\"Delete\" title=\"Vymazat\" draggable=false></td>";
+                        newRow.innerHTML += "<td><img src=\"..\/admin-image\/delete.png\" onclick=\"deleteFileFromServer(\'" + row.name + "\')\" alt=\"Delete\" title=\"Delete\" draggable=false></td>";
                         tableBody.appendChild(newRow);
                     });
                 }

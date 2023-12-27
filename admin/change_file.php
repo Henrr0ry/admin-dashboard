@@ -1,5 +1,5 @@
 <?php
-$directory = "../news-image/";
+$directory = "../upload-files/";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && is_dir($directory) && isset($_FILES["fileToUpload"])) {
     $targetFile = $directory . basename($_FILES["fileToUpload"]["name"]); // Cesta k uložení souboru

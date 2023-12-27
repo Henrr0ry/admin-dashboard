@@ -1,5 +1,5 @@
 <?php
-$directory = "../news-image";
+$directory = "../upload-files";
 $fileData = array();
 
 if (is_dir($directory)) {
