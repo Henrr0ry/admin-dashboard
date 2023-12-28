@@ -1,2 +1,1 @@
-# Upload files
-- here it is!
+This is a template file!

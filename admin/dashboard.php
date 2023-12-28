@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Admin Dashboard</title>
+        <title><?= $lang_admin_dashboard ?></title>
         <meta http-equiv="refresh" content="600">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,23 +16,23 @@
     <body>
         <p class="sign">Website by Henrr0ry</p>
         <div class="dashboard">
-            <header>Admin Dashboard</header>
+            <header><?= $lang_admin_dashboard ?></header>
             <div class="log-panel">
-                <img src="<?php echo $profile ?>" class="profile-pic"><h4 class="profile-name"><?php echo $display ?></h4>
+                <img src="<?= $profile ?>" class="profile-pic"><h4 class="profile-name"><?= $display ?></h4>
             </div>
             <section>
-                <h3>Files and Logs</h3>
+                <h3><?= $lang_files_and_logs ?></h3>
                 <div class="side">
                     <table>
                         <thead>
                             <tr>
-                                <th colspan="20"><center>Files</center></th>
+                                <th colspan="20"><center><?= $lang_files ?></center></th>
                             </tr>
                             <tr>
-                                <th>Name</th>
-                                <th>Size</th>
-                                <th class="icon-cell"><img class="refresh" src="../admin-image/refresh.png" onclick="loadFiles()" alt="Refresh" title="Refresh" draggable=false></th>
-                                <th class="icon-cell"><img src="../admin-image/upload.png" onclick='document.getElementById("upload").showModal();' alt="Upload" title="Upload" draggable=false></th>
+                                <th><?= $lang_file_name ?></th>
+                                <th><?= $lang_size ?></th>
+                                <th class="icon-cell"><img class="refresh" src="../admin-image/refresh.png" onclick="loadFiles()" alt="<?= $lang_refresh ?>" title="<?= $lang_refresh ?>" draggable=false></th>
+                                <th class="icon-cell"><img src="../admin-image/upload.png" onclick='document.getElementById("upload").showModal();' alt="<?= $lang_upload ?>" title="<?= $lang_upload ?>" draggable=false></th>
                             </tr>
                         </thead>
                         <tbody id="fileList">
@@ -43,7 +43,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>History</th>
+                                <th><?= $lang_history ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,7 +55,7 @@
                         </tbody>
                     </table>
                 </div>
-                <h3>MySQL Database</h3>
+                <h3><?= $lang_db ?></h3>
                 <?php
                     $tablesQuery = "SHOW TABLES";
                     $tablesResult = $conn->query($tablesQuery);
@@ -80,8 +80,8 @@
                                 echo "Table not have any column!";
                             }
                             $columnNames .= "]";
-                            echo "<th class=\"icon-cell\"><img class=\"refresh\" src=\"../admin-image/refresh.png\" onclick=\"loadData('$tableName')\" alt=\"Refresh\" title=\"Refresh\" draggable=false></th>";
-                            echo "<th class=\"icon-cell\"><img src=\"../admin-image/add.png\" onclick=\"addeditRow('$tableName', $columnNames)\" alt=\"Add\" title=\"Add\" draggable=false></th>";
+                            echo "<th class=\"icon-cell\"><img class=\"refresh\" src=\"../admin-image/refresh.png\" onclick=\"loadData('$tableName')\" alt=\"$lang_refresh\" title=\"$lang_refresh\" draggable=false></th>";
+                            echo "<th class=\"icon-cell\"><img src=\"../admin-image/add.png\" onclick=\"addeditRow('$tableName', $columnNames)\" alt=\"$lang_add\" title=\"$lang_add\" draggable=false></th>";
                             echo "</tr></thead><tbody id=\"$tableName\"></tbody></table>";
                         }
                     } else {
@@ -92,36 +92,36 @@
         </div>
         <dialog id="edit">
             <div class="dialog">
-                <h3>Edit data</h3>
-                <img src="../admin-image/close.png" onclick="document.getElementById('edit').close()" alt="Close" title="Close" draggable=false><br>
+                <h3><?= $lang_edit_data ?></h3>
+                <img src="../admin-image/close.png" onclick="document.getElementById('edit').close()" alt="<?= $lang_close ?>" title="<?= $lang_close ?>" draggable=false><br>
                 <data id="edittable" value=""></data>
                 <data id="editid" value=""></data>
                 <div id="inputContainer"></div>
-                <button onclick="saveRow()" class="savebtn">Save</button> <br> <br> <br>
+                <button onclick="saveRow()" class="savebtn"><?= $lang_save ?></button> <br> <br> <br>
             </div>
         </dialog>
         <dialog id="add">
             <div class="dialog">
-                <h3>Add data</h3>
-                <img src="../admin-image/close.png" onclick="document.getElementById('add').close()" alt="Close" title="Close" draggable=false><br>
+                <h3><?= $lang_add_data ?></h3>
+                <img src="../admin-image/close.png" onclick="document.getElementById('add').close()" alt="<?= $lang_close ?>" title="<?= $lang_close ?>" draggable=false><br>
                 <data id="addtable" value=""></data>
                 <div id="addContainer"></div>
-                <button onclick="addRow()" class="savebtn">Save</button> <br> <br> <br>
+                <button onclick="addRow()" class="savebtn"><?= $lang_save ?></button> <br> <br> <br>
             </div>
         </dialog>
         <dialog id="delete" >
             <div class="dialog">
-                <h3>Do you realy want to delete this data?</h3>
-                <button class="savebtn" id="cancelDelete">No, keep it</button>
-                <button class="savebtn red" id="confirmDelete">Yes, delete</button> <br> <br> <br> <br> <br> <br> <br>
+                <h3><?= $lang_delete_data ?></h3>
+                <button class="savebtn" id="cancelDelete"><?= $lang_no ?></button>
+                <button class="savebtn red" id="confirmDelete"><?= $lang_yes ?></button> <br> <br> <br> <br> <br> <br> <br>
             </div>
         </dialog>
         <dialog id="upload">
             <div class="dialog">
-                <h3>Upload a file</h3>
-                <img src="../admin-image/close.png" onclick="document.getElementById('upload').close()" alt="Close" title="Close" draggable=false><br>
+                <h3><?= $lang_upload_data ?></h3>
+                <img src="../admin-image/close.png" onclick="document.getElementById('upload').close()" alt="<?= $lang_close ?>" title="<?= $lang_close ?>" draggable=false><br>
                 <div id="dragfile" class="upload" ondragover="allowDrop(event)" ondrop="drop(event)"><img class="upload" src="../admin-image/upload.png"><p><input id="file" type="file"></p></div>
-                <button class="savebtn" onclick="saveFileToServer()">Upload</button> <br> <br> <br>
+                <button class="savebtn" onclick="saveFileToServer()"><?= $lang_upload ?></button> <br> <br> <br>
             </div>
         </dialog>
         <script>

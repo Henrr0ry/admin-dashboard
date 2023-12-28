@@ -16,4 +16,33 @@
         echo "<h1>Connection Error!</h1>";
         die("Connection lost: " . $conn->connect_error);
     }
+    //LANGUAGE PACK
+    $lang_admin_login = "Admin Login";
+    $lang_name = "Name";
+    $lang_password = "Password";
+    $lang_show_password = "Show password";
+    $lang_login = "Login";
+
+    $lang_admin_dashboard = "Admin Dashboard";
+    $lang_files_and_logs = "Files and Logs";
+    $lang_files = "Files";
+    $lang_file_name = "Name";
+    $lang_size = "Size";
+    $lang_history = "History";
+
+    $lang_db = "MySQL Database";
+    $lang_refresh = "Refresh";
+    $lang_upload = "Upload";
+    $lang_delete = "Delete";
+    $lang_edit = "Edit";
+    $lang_add = "Add";
+
+    $lang_edit_data = "Edit Data";
+    $lang_add_data = "Add data";
+    $lang_delete_data = "Do you realy want to delete this data?";
+    $lang_no = "No, keep it";
+    $lang_yes = "Yes, delete";
+    $lang_upload_data = "Upload a file";
+    $lang_close = "Close";
+    $lang_save = "Save";
 ?>
