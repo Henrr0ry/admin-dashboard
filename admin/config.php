@@ -45,4 +45,6 @@
     $lang_upload_data = "Upload a file";
     $lang_close = "Close";
     $lang_save = "Save";
+
+    $version = "1.0"
 ?>

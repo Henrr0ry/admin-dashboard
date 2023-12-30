@@ -17,7 +17,7 @@
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     </head>
     <body>
-        <p class="sign">Website by Henrr0ry</p>
+        <p class="sign">2023 © Henrr0ry, version <?= $version ?></p>
         <div class="login">
             <h3><?= $lang_admin_login ?></h3>
             <div>
