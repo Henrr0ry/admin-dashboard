@@ -1,3 +1,4 @@
+# Features
 - change layaut to table and mysql have rows 2
 - setting to allow features
 - more admin accounts
