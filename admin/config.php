@@ -11,11 +11,12 @@
     header('Pragma: no-cache');
 
     //MYSQL DATABASE CONNECTION
-    $conn = new mysqli('localhost', 'root', '', 'pumpa_db');
+    $conn = new mysqli('localhost', 'root', '', 'temp_db');
     if ($conn->connect_error) {
         echo "<h1>Connection Error!</h1>";
-        //die("Connection lost: " . $conn->connect_error);
+        die("Connection lost: " . $conn->connect_error);
     }
+
     //LANGUAGE PACK
     $lang_admin_login = "Admin Login";
     $lang_name = "Name";

@@ -1,6 +1,6 @@
 :root {
     --main: lime;
-    --second: green;
+    --second: rgb(2, 199, 2);
     --shadow: gray;
 }
 html {
@@ -123,13 +123,13 @@ textarea {
 table {
     width: calc(100% - 21px);
     margin: 10px;
-    background: var(--main);
+    background: var(--second);
     border-spacing: 0;
-    border: 0.3rem solid var(--main);
+    border: 0.3rem solid var(--second);
     border-radius: 0.5rem;
 }
 thead {
-    background: var(--main);
+    background: var(--second);
 }
 tbody {
     background: white;

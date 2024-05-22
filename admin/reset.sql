@@ -1,6 +1,21 @@
-DROP DATABASE pumpa_db;
-CREATE DATABASE pumpa_db;
-USE pumpa_db;
+DROP DATABASE temp_db;
+CREATE DATABASE temp_db;
+USE temp_db;
+
+CREATE TABLE uploads (
+    ID int AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    data BINARY(100)
+);
+
+CREATE TABLE profile (
+    ID int AUTO_INCREMENT PRIMARY KEY,
+    profile int,
+    display_name VARCHAR(100),
+    name VARCHAR(100),
+    password VARCHAR(100),
+    permission int
+);
 
 CREATE TABLE opentable (
     ID int AUTO_INCREMENT PRIMARY KEY,
@@ -9,14 +24,12 @@ CREATE TABLE opentable (
     start VARCHAR(10),
     end VARCHAR(10)
 );
-ALTER TABLE opentable AUTO_INCREMENT = 1;   
 
 CREATE TABLE map (
     ID int AUTO_INCREMENT PRIMARY KEY,
     map_url VARCHAR(200),
     description VARCHAR(1000)
 );
-ALTER TABLE map AUTO_INCREMENT = 1;
 
 CREATE TABLE news (
     ID int AUTO_INCREMENT PRIMARY KEY,
@@ -27,15 +40,16 @@ CREATE TABLE news (
     img VARCHAR(150),
     date DATE
 );
-ALTER TABLE news AUTO_INCREMENT = 1;
 
 CREATE TABLE contact (
     ID int AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50),
     value VARCHAR(50)
 );
-ALTER TABLE contact AUTO_INCREMENT = 1;
 /* set values */
+
+INSERT INTO profile (id, profile, display_name, name, password, permission) VALUES (0, 0, "Main Administrator", "admin", "$2y$10$.Zc3/IHeWpR6EIXpin/kX.F7GN6nGhdFyNtp23oSw6JVQBii1D.y6", 0);
+
 INSERT INTO opentable (underline, day, start, end) VALUES (false, "Pondělí", "6:00", "20:00");
 INSERT INTO opentable (underline, day, start, end) VALUES (false, "Úterý", "6:00", "20:00");
 INSERT INTO opentable (underline, day, start, end) VALUES (false, "Středa", "6:00", "20:00");

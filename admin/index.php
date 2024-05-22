@@ -3,10 +3,18 @@
     <?php
         include "config.php";
         if (isset($_POST["name"]) && isset($_POST["passwd"])) {
-            if (strcmp($_POST["name"], $N) == 0 && password_verify($_POST["passwd"], $P)) {
-                $_SESSION['POST'] = $_POST;
-                header('Location: dashboard.php', true, 307);
-            }
+            $profiles = $conn->query("SELECT name, password FROM profile");
+            if ($profiles->num_rows > 0) {
+                while($profile = $profiles->fetch_assoc()) {
+                    echo "'" . $profile["password"] . "'";
+                    if (strcmp($_POST["name"], $profile["name"]) && password_verify($_POST["passwd"], $profile["password"])) {
+                        echo "successfull login";
+                        //$_SESSION['POST'] = $_POST;
+                        //header('Location: dashboard.php', true, 307);
+                       // break;
+                    }
+                }
+              }
         }
     ?>
     <head>
@@ -17,7 +25,7 @@
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     </head>
     <body>
-        <p class="sign">2023 © Henrr0ry, version <?= $version ?></p>
+        <p class="sign">2024 © Henrr0ry, version <?= $version ?></p>
         <div class="login">
             <h3><?= $lang_admin_login ?></h3>
             <div>
