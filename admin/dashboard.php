@@ -1,7 +1,12 @@
 <?php 
-    include "config.php";
-    if (isset($_POST["name"]) && isset($_POST["passwd"])) {
-        if (strcmp($_POST["name"], $N) && password_verify($_POST["passwd"], $P)) {
+        include "config.php";
+        if (isset($_POST["name"]) && isset($_POST["passwd"])) {
+            $profiles = $conn->query("SELECT * FROM profile");
+            if ($profiles->num_rows > 0) {
+                while($profile = $profiles->fetch_assoc()) {
+                    if (strcmp($_POST["name"], $profile["name"]) == 0 && password_verify($_POST["passwd"], $profile["password"])) {
+                        $icon = $profile["icon"];
+                        $display_name = $profile["display_name"];
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,7 +15,7 @@
         <meta http-equiv="refresh" content="600">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="admin-style.css?v=2">
+        <link rel="stylesheet" href="admin-style.css?v=3">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     </head>
     <body>
@@ -18,7 +23,8 @@
         <div class="dashboard">
             <header><?= $lang_admin_dashboard ?></header>
             <div class="log-panel">
-                <img src="<?= $profile ?>" class="profile-pic"><h4 class="profile-name"><?= $display ?></h4>
+                <img src="profile_pic/<?= $icon ?>" class="profile-pic"><h4 class="profile-name"><?= $display_name ?></h4>
+                <button class="savebtn red" onclick="logout()">Log Out</button>
             </div>
             <section>
                 <h3><?= $lang_files_and_logs ?></h3>
@@ -64,6 +70,9 @@
                         while ($tableRow = $tablesResult->fetch_row()) {
                             $tableName = $tableRow[0];
                             $columnNames= "[";
+
+                            if (str_contains($tableName, "uploads") || str_contains($tableName, "log") || str_contains($tableName, "profile") || str_contains($tableName, "analytics"))
+                                continue;
 
                             echo "<table><thead><tr><th colspan=\"20\">$tableName</th></tr><tr>";
                             $columnsQuery = "SHOW COLUMNS FROM $tableName";
@@ -125,6 +134,9 @@
             </div>
         </dialog>
         <script>
+        
+        const name = "<?= $profile["name"] ?>";
+        
         function loadData(tableName) {
             var tableBody = document.getElementById(tableName);
             tableBody.innerHTML = "";
@@ -142,8 +154,8 @@
                         for (var key in row) {
                             newRow.innerHTML += "<td>" + row[key] + "</td>";
                         }
-                        newRow.innerHTML += "<td><img src=\"..\/admin-image\/edit.png\" onclick='editRow(\"" + tableName + "\"," + row.ID + ", " + JSON.stringify(row) + ")' alt=\"edit\" title=\"Edit\" draggable=false></td>";
-                        newRow.innerHTML += "<td><img src=\"..\/admin-image\/delete.png\" onclick='deleteRow(\"" + tableName + "\", " + row.ID + ")' alt=\"Delete\" title=\"Delete\" draggable=false></td>";
+                        newRow.innerHTML += "<td><img src=\"admin-image\/edit.png\" onclick='editRow(\"" + tableName + "\"," + row.ID + ", " + JSON.stringify(row) + ")' alt=\"edit\" title=\"Edit\" draggable=false></td>";
+                        newRow.innerHTML += "<td><img src=\"admin-image\/delete.png\" onclick='deleteRow(\"" + tableName + "\", " + row.ID + ")' alt=\"Delete\" title=\"Delete\" draggable=false></td>";
                         tableBody.appendChild(newRow);
                     });
                 }
@@ -208,7 +220,7 @@
                 xhr.send(phpdata);
                 setTimeout(() => {
                     loadData(tableName);
-                    log("deleted data in table " + tableName);
+                    log("deleted data in table " + tableName + " by " + name);
                 }, 500);
             }
         }
@@ -237,7 +249,7 @@
             setTimeout(() => {
                 document.getElementById("edit").close();
                 loadData(document.getElementById("edittable").value);
-                log("edited table " + document.getElementById("edittable").value);
+                log("edited table " + document.getElementById("edittable").value + " by " + name);
             }, 500);
         }
 
@@ -289,32 +301,34 @@
             phpdata.append('content', content);
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "add.php", true);
+            xhr.open("POST", "command/add.php", true);
             xhr.send(phpdata);
             setTimeout(() => {
                 document.getElementById("add").close();
                 loadData(document.getElementById("addtable").value);
-                log("adden data to table " + document.getElementById("addtable").value + " " + content);
+                log("adden data to table " + document.getElementById("addtable").value + " " + content + " by " + name);
             }, 500);
         }
         //LOAD LOG
         function loadLog() {
             setTimeout(() => {
-                var rawFile = new XMLHttpRequest();
-                rawFile.open("POST", "history.log", true);
-                rawFile.onreadystatechange = function() {
-                    if (rawFile.readyState === 4) {
-                        if (rawFile.status === 200) {
-                            var allText = rawFile.responseText;
-                            document.getElementById("log").innerHTML = allText;
-                        } else if (rawFile.status === 404) {
-                            document.getElementById("log").innerHTML = "File not found!";
-                        } else {
-                            document.getElementById("log").innerHTML = "Error load file!";
-                        }
+                var tableBody = document.getElementById('log');
+                tableBody.value = "";
+
+                var phpdata = new FormData();
+                phpdata.append('table', 'log');
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "command/get.php", true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var data = JSON.parse(xhr.responseText);
+                        data.forEach(function(row) {
+                            tableBody.value += row["log"] + "\n";
+                        });
                     }
-                }
-                rawFile.send();
+                };
+                xhr.send(phpdata);
             }, 100);
         }
 
@@ -323,7 +337,7 @@
             phpdata.append('event', event);
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "log.php?", true);
+            xhr.open("POST", "command/log.php", true);
             xhr.send(phpdata);
             loadLog();
         }
@@ -333,7 +347,7 @@
             tableBody.innerHTML = "";
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "list_files.php", true);
+            xhr.open("POST", "command/list_files.php", true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var data = JSON.parse(xhr.responseText);
@@ -341,7 +355,7 @@
                         var newRow = document.createElement("tr");
                         newRow.innerHTML = "<td><a target=\"_blank\"href=\"" + row.link + "\">" + row.name + "</a></td><td>" + row.size + "</td>";
                         newRow.innerHTML += "<td></td>";
-                        newRow.innerHTML += "<td><img src=\"..\/admin-image\/delete.png\" onclick=\"deleteFileFromServer(\'" + row.name + "\')\" alt=\"Delete\" title=\"Delete\" draggable=false></td>";
+                        newRow.innerHTML += "<td><img src=\"admin-image\/delete.png\" onclick=\"deleteFileFromServer(\'" + row.name + "\')\" alt=\"Delete\" title=\"Delete\" draggable=false></td>";
                         tableBody.appendChild(newRow);
                     });
                 }
@@ -371,12 +385,12 @@
             var phpdata = new FormData();
             phpdata.append("fileToUpload", document.getElementById('file').files[0]);
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "change_file.php", true);
+            xhr.open("POST", "command/change_file.php", true);
             xhr.send(phpdata);
 
             setTimeout(() => {
                 document.getElementById("upload").close();
-                log("uploded file " + document.getElementById('file').files[0].name);
+                log("uploded file " + document.getElementById('file').files[0].name + " by " + name);
                 loadFiles();
             }, 500);
         }
@@ -389,12 +403,12 @@
                 phpdata.append("deleteFile", fileName); 
 
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "change_file.php", true);
+                xhr.open("POST", "command/change_file.php", true);
                 xhr.send(phpdata);
 
                 setTimeout(() => {
                     document.getElementById("upload").close();
-                    log("deleted file " + fileName);
+                    log("deleted file " + fileName + " by " + name);
                     loadFiles();
                 }, 500);
             }
@@ -404,10 +418,21 @@
             loadLog();
             loadFiles();
         };
+
+        function logout() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "demo_phpfile.php");
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("");
+            document.location = 'dashboard.php';
+        }
         </script>
     </body>
 </html>
 <?php    
+        break;
+                }
+            }
         }
     }
     else {

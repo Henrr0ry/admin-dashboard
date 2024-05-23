@@ -5,18 +5,35 @@ USE temp_db;
 CREATE TABLE uploads (
     ID int AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100),
-    data BINARY(100)
+    size int,
+    path VARCHAR(100)
 );
 
 CREATE TABLE profile (
     ID int AUTO_INCREMENT PRIMARY KEY,
-    profile int,
+    icon VARCHAR(100),
     display_name VARCHAR(100),
     name VARCHAR(100),
     password VARCHAR(100),
-    permission int
+    users BOOLEAN,
+    logs BOOLEAN,
+    files BOOLEAN,
+    tables BOOLEAN,
+    analytics BOOLEAN
 );
 
+CREATE TABLE log (
+    log VARCHAR(100)
+);
+
+CREATE TABLE analytics (
+    date DATE,
+    views int,
+    clicks int
+);
+
+INSERT INTO profile VALUES (0, "0.png", "Administrator", "admin", "$2y$10$.Zc3/IHeWpR6EIXpin/kX.F7GN6nGhdFyNtp23oSw6JVQBii1D.y6", 1, 1, 1, 1, 1);
+--      END OF TOOL DB
 CREATE TABLE opentable (
     ID int AUTO_INCREMENT PRIMARY KEY,
     underline BOOLEAN,
@@ -48,7 +65,8 @@ CREATE TABLE contact (
 );
 /* set values */
 
-INSERT INTO profile (id, profile, display_name, name, password, permission) VALUES (0, 0, "Main Administrator", "admin", "$2y$10$.Zc3/IHeWpR6EIXpin/kX.F7GN6nGhdFyNtp23oSw6JVQBii1D.y6", 0);
+INSERT INTO profile VALUES (0, "0.png", "Main Administrator", "admin", "$2y$10$.Zc3/IHeWpR6EIXpin/kX.F7GN6nGhdFyNtp23oSw6JVQBii1D.y6", 1, 1, 1, 1, 1);
+INSERT INTO profile VALUES (0, "3.png", "Moj Admin", "admin1", "$2y$10$.Zc3/IHeWpR6EIXpin/kX.F7GN6nGhdFyNtp23oSw6JVQBii1D.y6", 1, 1, 1, 1, 1);
 
 INSERT INTO opentable (underline, day, start, end) VALUES (false, "Pondělí", "6:00", "20:00");
 INSERT INTO opentable (underline, day, start, end) VALUES (false, "Úterý", "6:00", "20:00");

@@ -1,20 +1,12 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+include "connect.php";
+
 if (isset($_POST["event"])) {
     $event = $_POST["event"];
-    $log = date("H:i:s d.m.Y") . " - " . $event . "\n";
+    $log = "('" . date("H:i:s d.m.Y") . " - " . $event . "')";
 
-    $filename = "history.log";
-    if (!file_exists($filename)) {
-        touch($filename);
-        chmod($filename, 0777);
-    }
-    
-    $file = fopen($filename, "a");
-    fwrite($file, $log);
-    fclose($file);
+    $sql = "INSERT INTO log VALUES $log";
+    $conn->query($sql);
 }
-
 $conn->close();
 ?>

@@ -12,7 +12,7 @@ if (is_dir($directory)) {
 
                 $fileData[] = array(
                     "name" => $file,
-                    "link" => $filePath,
+                    "link" => "upload-files/" . $file,
                     "size" => $formattedSize
                 );
             }

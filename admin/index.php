@@ -6,12 +6,10 @@
             $profiles = $conn->query("SELECT name, password FROM profile");
             if ($profiles->num_rows > 0) {
                 while($profile = $profiles->fetch_assoc()) {
-                    echo "'" . $profile["password"] . "'";
-                    if (strcmp($_POST["name"], $profile["name"]) && password_verify($_POST["passwd"], $profile["password"])) {
-                        echo "successfull login";
-                        //$_SESSION['POST'] = $_POST;
-                        //header('Location: dashboard.php', true, 307);
-                       // break;
+                    if (strcmp($_POST["name"], $profile["name"]) == 0 && password_verify($_POST["passwd"], $profile["password"])) {
+                        $_SESSION['POST'] = $_POST;
+                        header('Location: dashboard.php', true, 307);
+                        break;
                     }
                 }
               }

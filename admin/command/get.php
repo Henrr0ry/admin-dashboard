@@ -1,8 +1,5 @@
 <?php
-$conn = new mysqli('localhost', 'root', '', 'pumpa_db');
-if ($conn->connect_error) {
-    die("Připojení selhalo: " . $conn->connect_error);
-}
+include "connect.php";
 
 $tableName = $_POST['table'];
 

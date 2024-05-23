@@ -236,7 +236,6 @@ img.upload {
 .profile-pic {
     height: 3rem;
     width: 3rem;
-    border: 3px solid black;
     border-radius: 50%;
     display: inline-block;
     margin-top: 1rem;
@@ -245,6 +244,9 @@ img.upload {
 .profile-name {
     font-size: 1.5rem;
     display: inline-block;
+    color: #eee;
+    padding: 1rem;
+    margin: 0;
 }
 /*FOOTER*/
 .sign {
