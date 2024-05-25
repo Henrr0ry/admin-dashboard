@@ -6,13 +6,13 @@ CREATE TABLE profile (
     ID int AUTO_INCREMENT PRIMARY KEY,
     icon VARCHAR(100),
     display_name VARCHAR(100),
-    name VARCHAR(100),
-    password VARCHAR(100),
-    users BOOLEAN,
-    logs BOOLEAN,
-    files BOOLEAN,
-    tables BOOLEAN,
-    analytics BOOLEAN
+    name VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    users BOOLEAN NOT NULL,
+    logs BOOLEAN NOT NULL,
+    files BOOLEAN NOT NULL,
+    tables BOOLEAN NOT NULL,
+    analytics BOOLEAN NOT NULL
 );
 
 CREATE TABLE log (

@@ -15,7 +15,7 @@
         <meta http-equiv="refresh" content="600">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="admin-style.css?v=3">
+        <link rel="stylesheet" href="admin-style.css?v=5">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     </head>
     <body>
@@ -27,12 +27,11 @@
                 <button class="savebtn red" onclick="logout()">Log Out</button>
             </div>
             <section>
-                <h3><?= $lang_files_and_logs ?></h3>
                 <div class="side">
                     <table>
                         <thead>
                             <tr>
-                                <th colspan="20"><center><?= $lang_files ?></center></th>
+                                <th colspan="20"><?= $lang_files ?></th>
                             </tr>
                             <tr>
                                 <th><?= $lang_file_name ?></th>
@@ -56,6 +55,22 @@
                             <tr>
                                 <td>
                                     <textarea id="log" disabled></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><?= $lang_analytics ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <textareadisabled></textarea>
                                 </td>
                             </tr>
                         </tbody>
@@ -274,6 +289,18 @@
                 addContainer.appendChild(input);
                 addContainer.appendChild(document.createElement('br'));
                 }
+            if (tableName == "profile") {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = "password";
+                
+                const label = document.createElement('label');
+                label.textContent = "password";
+                
+                addContainer.appendChild(label);
+                addContainer.appendChild(input);
+                addContainer.appendChild(document.createElement('br'));
+            }
             dialog.showModal();
         }
 
@@ -283,7 +310,7 @@
             let names = "(";
             let content = "(";
             inputs.forEach(input => {
-                if (input.id != "ID") {
+                if (input.id != "ID"){
                     const id = input.getAttribute('data-id');
                     const value = input.getAttribute('data-value');
                     names += input.id + ", ";
@@ -299,6 +326,9 @@
             phpdata.append('table', document.getElementById("addtable").value);
             phpdata.append('names', names);
             phpdata.append('content', content);
+
+            console.log(names);
+            console.log(content);
 
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "command/add.php", true);

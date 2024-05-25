@@ -19,11 +19,11 @@
     $lang_login = "Login";
 
     $lang_admin_dashboard = "Admin Dashboard";
-    $lang_files_and_logs = "Files and Logs";
     $lang_files = "Files";
     $lang_file_name = "Name";
     $lang_size = "Size";
     $lang_history = "History";
+    $lang_analytics = "Analytics";
 
     $lang_db = "MySQL Database";
     $lang_refresh = "Refresh";

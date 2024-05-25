@@ -155,10 +155,14 @@ table img {
         rotate: -360deg;
     }
 }
+th:first-child, td:first-child{
+    text-align: left;
+    white-space: nowrap;
+}
 .icon-cell {
-  text-align: right;
-  white-space: nowrap;
-  width: calc(1.5rem + 10px);
+    text-align: right;
+    white-space: nowrap;
+    width: calc(1.5rem + 10px);
 }
 .icon-cell img {
     margin: 5px;
