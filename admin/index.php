@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html>
     <?php
         include "config.php";
         if (isset($_POST["name"]) && isset($_POST["passwd"])) {
@@ -15,6 +13,8 @@
               }
         }
     ?>
+<!DOCTYPE html>
+<html>
     <head>
         <title><?= $lang_admin_login ?></title>
         <meta charset="UTF-8">

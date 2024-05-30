@@ -15,7 +15,7 @@
         <meta http-equiv="refresh" content="600">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="admin-style.css?v=5">
+        <link rel="stylesheet" href="admin-style.css?v=6">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     </head>
     <body>
@@ -27,6 +27,7 @@
                 <button class="savebtn red" onclick="logout()">Log Out</button>
             </div>
             <section>
+                <?php if ($profile["files"]) { ?>
                 <div class="side">
                     <table>
                         <thead>
@@ -44,6 +45,7 @@
                         </tbody>
                     </table>
                 </div>
+                <?php } if ($profile["logs"]) { ?>
                 <div class="side">
                     <table>
                         <thead>
@@ -60,6 +62,7 @@
                         </tbody>
                     </table>
                 </div>
+                <?php } if ($profile["analytics"]) { ?>
                 <div>
                     <table>
                         <thead>
@@ -76,7 +79,8 @@
                         </tbody>
                     </table>
                 </div>
-                <h3><?= $lang_db ?></h3>
+                <?php } if ($profile["tables"]) { ?>
+                <h3 class="big"><?= $lang_db ?></h3>
                 <?php
                     $tablesQuery = "SHOW TABLES";
                     $tablesResult = $conn->query($tablesQuery);
@@ -112,6 +116,7 @@
                         echo "Database not have any table!";
                     }
                 ?>
+                <?php } ?>
             </section>
         </div>
         <dialog id="edit">

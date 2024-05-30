@@ -47,6 +47,11 @@ h3 {
     margin-top: 1.5rem;
     padding-left: 1.5rem;
 }
+.big {
+    float: left;
+    margin: 1rem 0 0 0.5rem;
+    width: 99%;
+}
 #showpasswd {
     width: 1rem;
     height: 1rem;
