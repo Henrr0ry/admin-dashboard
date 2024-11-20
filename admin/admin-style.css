@@ -22,6 +22,7 @@ body {
     text-align: center;
     display: block;
     margin: 3rem auto 0 auto;
+    box-shadow: 0 10px 0 var(--second);
 }
 .login div {
     width: fit-content;
@@ -77,6 +78,12 @@ h3 {
     padding: 5px;
     width: calc(85% + 10px);
     margin-top: 1rem;
+    box-shadow: 0 7px 0 var(--second);
+    transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+}
+.login button:active {
+    transform: translateY(7px);
+    box-shadow: 0 0px 0 var(--second);
 }
 /*ADMIN DASHBOARD*/
 .dashboard {
@@ -87,6 +94,7 @@ h3 {
     border-radius: 20px;
     text-align: center;
     margin: 3rem auto 0 auto;
+    box-shadow: 0 10px 0 var(--second);
 }
 header {
     font-size: 3rem;
@@ -216,9 +224,20 @@ dialog img {
     float: right;
     margin: 1rem;
     padding: 5px 1rem 5px 1rem;
+    box-shadow: 0 7px 0 var(--second);
+    transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+}
+.savebtn:active {
+    transform: translateY(7px);
+    box-shadow: 0 0px 0;
 }
 .savebtn.red {
     background: red;
+    box-shadow: 0 7px 0 #960000;
+}
+.savebtn.red:active {
+    transform: translateY(7px);
+    box-shadow: 0 0px 0 #960000;
 }
 div.upload {
     width: 24rem;
@@ -256,6 +275,7 @@ img.upload {
     color: #eee;
     padding: 1rem;
     margin: 0;
+    transform: translateY(-0.7rem);
 }
 /*FOOTER*/
 .sign {

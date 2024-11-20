@@ -5,6 +5,12 @@
             if ($profiles->num_rows > 0) {
                 while($profile = $profiles->fetch_assoc()) {
                     if (strcmp($_POST["name"], $profile["name"]) == 0 && password_verify($_POST["passwd"], $profile["password"])) {
+                        //LOG
+                        $log = "('" . date("H:i:s d.m.Y") . " - " . $_POST["name"] . " login" . "')";
+                        $sql = "INSERT INTO log VALUES $log";
+                        $conn->query($sql);
+
+                        //LOGIN
                         $_SESSION['POST'] = $_POST;
                         header('Location: dashboard.php', true, 307);
                         break;
@@ -18,8 +24,9 @@
     <head>
         <title><?= $lang_admin_login ?></title>
         <meta charset="UTF-8">
+        <meta http-equiv="Cache-Control" content="no-store" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="admin-style.css?v=1">
+        <link rel="stylesheet" href="admin-style.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     </head>
     <body>

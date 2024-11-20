@@ -13,9 +13,10 @@
     <head>
         <title><?= $lang_admin_dashboard ?></title>
         <meta http-equiv="refresh" content="600">
+        <meta http-equiv="Cache-Control" content="no-store" />
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="admin-style.css?v=1">
+        <link rel="stylesheet" href="admin-style.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     </head>
     <body>
@@ -455,6 +456,9 @@
         };
 
         function logout() {
+
+            log(name + " logout");
+
             const xhttp = new XMLHttpRequest();
             xhttp.open("POST", "demo_phpfile.php");
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

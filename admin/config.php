@@ -22,7 +22,7 @@
     $lang_files = "Files";
     $lang_file_name = "Name";
     $lang_size = "Size";
-    $lang_history = "History";
+    $lang_history = "History Log";
     $lang_analytics = "Analytics";
 
     $lang_db = "MySQL Database";
