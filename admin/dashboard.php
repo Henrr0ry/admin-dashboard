@@ -38,8 +38,8 @@
                             <tr>
                                 <th><?= $lang_file_name ?></th>
                                 <th><?= $lang_size ?></th>
-                                <th class="icon-cell"><img class="refresh" src="admin-image/refresh.png" onclick="loadFiles()" alt="<?= $lang_refresh ?>" title="<?= $lang_refresh ?>" draggable=false></th>
-                                <th class="icon-cell"><img src="admin-image/upload.png" onclick='document.getElementById("upload").showModal();' alt="<?= $lang_upload ?>" title="<?= $lang_upload ?>" draggable=false></th>
+                                <th class="icon-cell"><img class="refresh icon" src="admin-image/refresh.png" onclick="loadFiles()" alt="<?= $lang_refresh ?>" title="<?= $lang_refresh ?>" draggable=false></th>
+                                <th class="icon-cell"><img src="admin-image/upload.png" onclick='document.getElementById("upload").showModal();' alt="<?= $lang_upload ?>" title="<?= $lang_upload ?>" class="icon" draggable=false></th>
                             </tr>
                         </thead>
                         <tbody id="fileList">
@@ -109,8 +109,8 @@
                                 echo "Table not have any column!";
                             }
                             $columnNames .= "]";
-                            echo "<th class=\"icon-cell\"><img class=\"refresh\" src=\"admin-image/refresh.png\" onclick=\"loadData('$tableName')\" alt=\"$lang_refresh\" title=\"$lang_refresh\" draggable=false></th>";
-                            echo "<th class=\"icon-cell\"><img src=\"admin-image/add.png\" onclick=\"addeditRow('$tableName', $columnNames)\" alt=\"$lang_add\" title=\"$lang_add\" draggable=false></th>";
+                            echo "<th class=\"icon-cell\"><img class=\"refresh icon\" src=\"admin-image/refresh.png\" onclick=\"loadData('$tableName')\" alt=\"$lang_refresh\" title=\"$lang_refresh\" draggable=false></th>";
+                            echo "<th class=\"icon-cell\"><img src=\"admin-image/add.png\" onclick=\"addeditRow('$tableName', $columnNames)\" alt=\"$lang_add\" title=\"$lang_add\" class=\"icon\" draggable=false></th>";
                             echo "</tr></thead><tbody id=\"$tableName\"></tbody></table>";
                         }
                     } else {
@@ -123,7 +123,7 @@
         <dialog id="edit">
             <div class="dialog">
                 <h3><?= $lang_edit_data ?></h3>
-                <img src="admin-image/close.png" onclick="document.getElementById('edit').close()" alt="<?= $lang_close ?>" title="<?= $lang_close ?>" draggable=false><br>
+                <img src="admin-image/close.png" onclick="document.getElementById('edit').close()" alt="<?= $lang_close ?>" title="<?= $lang_close ?>" class="icon" draggable=false><br>
                 <data id="edittable" value=""></data>
                 <data id="editid" value=""></data>
                 <div id="inputContainer"></div>
@@ -133,7 +133,7 @@
         <dialog id="add">
             <div class="dialog">
                 <h3><?= $lang_add_data ?></h3>
-                <img src="admin-image/close.png" onclick="document.getElementById('add').close()" alt="<?= $lang_close ?>" title="<?= $lang_close ?>" draggable=false><br>
+                <img src="admin-image/close.png" onclick="document.getElementById('add').close()" alt="<?= $lang_close ?>" title="<?= $lang_close ?>" class="icon" draggable=false><br>
                 <data id="addtable" value=""></data>
                 <div id="addContainer"></div>
                 <button onclick="addRow()" class="savebtn"><?= $lang_save ?></button> <br> <br> <br>
@@ -149,7 +149,7 @@
         <dialog id="upload">
             <div class="dialog">
                 <h3><?= $lang_upload_data ?></h3>
-                <img src="admin-image/close.png" onclick="document.getElementById('upload').close()" alt="<?= $lang_close ?>" title="<?= $lang_close ?>" draggable=false><br>
+                <img src="admin-image/close.png" onclick="document.getElementById('upload').close()" alt="<?= $lang_close ?>" title="<?= $lang_close ?>" class="icon" draggable=false><br>
                 <div id="dragfile" class="upload" ondragover="allowDrop(event)" ondrop="drop(event)"><img class="upload" src="admin-image/upload.png"><p><input id="file" type="file"></p></div>
                 <button class="savebtn" onclick="saveFileToServer()"><?= $lang_upload ?></button> <br> <br> <br>
             </div>
@@ -175,8 +175,8 @@
                         for (var key in row) {
                             newRow.innerHTML += "<td>" + row[key] + "</td>";
                         }
-                        newRow.innerHTML += "<td><img src=\"admin-image\/edit.png\" onclick='editRow(\"" + tableName + "\"," + row.ID + ", " + JSON.stringify(row) + ")' alt=\"edit\" title=\"Edit\" draggable=false></td>";
-                        newRow.innerHTML += "<td><img src=\"admin-image\/delete.png\" onclick='deleteRow(\"" + tableName + "\", " + row.ID + ")' alt=\"Delete\" title=\"Delete\" draggable=false></td>";
+                        newRow.innerHTML += "<td><img src=\"admin-image\/edit.png\" onclick='editRow(\"" + tableName + "\"," + row.ID + ", " + JSON.stringify(row) + ")' alt=\"edit\" title=\"Edit\" class=\"icon\" draggable=false></td>";
+                        newRow.innerHTML += "<td><img src=\"admin-image\/delete.png\" onclick='deleteRow(\"" + tableName + "\", " + row.ID + ")' alt=\"Delete\" title=\"Delete\" class=\"icon\" draggable=false></td>";
                         tableBody.appendChild(newRow);
                     });
                 }
@@ -391,7 +391,7 @@
                         var newRow = document.createElement("tr");
                         newRow.innerHTML = "<td><a target=\"_blank\"href=\"" + row.link + "\">" + row.name + "</a></td><td>" + row.size + "</td>";
                         newRow.innerHTML += "<td></td>";
-                        newRow.innerHTML += "<td><img src=\"admin-image\/delete.png\" onclick=\"deleteFileFromServer(\'" + row.name + "\')\" alt=\"Delete\" title=\"Delete\" draggable=false></td>";
+                        newRow.innerHTML += "<td><img src=\"admin-image\/delete.png\" onclick=\"deleteFileFromServer(\'" + row.name + "\')\" alt=\"Delete\" title=\"Delete\" class=\"icon\" draggable=false></td>";
                         tableBody.appendChild(newRow);
                     });
                 }
@@ -466,6 +466,11 @@
             document.location = 'dashboard.php';
         }
         </script>
+        <button id="dark-btn" class="dark-btn">
+            <img id="light-on" src="admin-image/light-mode.png" draggable=false>
+            <img id="dark-on" src="admin-image/dark-mode.png" draggable=false>
+        </button>
+        <script src="dark-mode.js"></script>
     </body>
 </html>
 <?php    

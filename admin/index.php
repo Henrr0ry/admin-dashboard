@@ -47,6 +47,11 @@
                 </form>
             </div>
         </div>
+        <button id="dark-btn" class="dark-btn">
+            <img id="light-on" src="admin-image/light-mode.png" draggable=false>
+            <img id="dark-on" src="admin-image/dark-mode.png" draggable=false>
+        </button>
+        <script src="dark-mode.js"></script>
     </body>
     <script>
         function Show() {

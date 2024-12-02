@@ -1,7 +1,13 @@
 :root {
     --main: lime;
-    --second: rgb(2, 199, 2);
+    --second: #02c702;
     --shadow: gray;
+    --background: white;
+    --bg1: #ddd;
+    --red1: red;
+    --red2: #960000;
+    --text: snow;
+    --text1: black;
 }
 html {
     font-size: 20px;
@@ -16,7 +22,7 @@ body {
 .login {
     width: 20rem;
     height: 22rem;
-    background-color: white;
+    background-color: var(--background);
     border: 5px solid var(--main);
     border-radius: 20px;
     text-align: center;
@@ -68,10 +74,14 @@ h3 {
     font-size: 1.25rem;
     color: var(--main);
     width: 85%;
+    background: var(--background);
+}
+.login input[type="checkbox"] {
+    background: var(--background);
 }
 .login button {
     font-size: 1.25rem;
-    color: white;
+    color: var(--text);
     background: var(--main);
     border: 0;
     border-radius: 5px;
@@ -84,6 +94,27 @@ h3 {
 .login button:active {
     transform: translateY(7px);
     box-shadow: 0 0px 0 var(--second);
+}
+/*DARK MODE*/
+.dark-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: none;
+    border-radius: 50%;
+    background: var(--background);
+}
+.dark-btn img {
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    left: 0.25rem;
+    top: 0.25rem;
+}
+#dark-on {
+    visibility: hidden;
 }
 /*ADMIN DASHBOARD*/
 .dashboard {
@@ -99,14 +130,14 @@ h3 {
 header {
     font-size: 3rem;
     color: var(--main);
-    background: white;
+    background: var(--background);
     border-radius: 20px;
 }
 /*MAIN*/
 section {
     width: calc(100% - 10px);
     height: calc(100% - 9rem);
-    background-color: white;
+    background-color: var(--background);
     border: 5px solid var(--main);
     border-radius: 20px;
     text-align: center;
@@ -124,7 +155,7 @@ section {
 }
 textarea {
     font-size: 0.5rem;
-    color: white;
+    color: snow;
     background: black;
     border: none;
     margin: 0;
@@ -140,15 +171,16 @@ table {
     border-spacing: 0;
     border: 0.3rem solid var(--second);
     border-radius: 0.5rem;
+    color: var(--text1);
 }
 thead {
     background: var(--second);
 }
 tbody {
-    background: white;
+    background: var(--background);
 }
 tbody tr:nth-child(even) {
-    background: #ddd;
+    background: var(--bg1)
 }
 table img {
     width: 1.5rem;
@@ -180,6 +212,9 @@ th:first-child, td:first-child{
 .icon-cell img {
     margin: 5px;
 }
+.invert .icon {
+    filter: invert(1);
+}
 /*DIALOG*/
 dialog {
     height: 100vh;
@@ -191,7 +226,7 @@ dialog {
 dialog .dialog {
     border: 3px solid var(--second);
     border-radius: 20px;
-    background: white;
+    background: var(--background);
     width: 30rem;
     height: fit-content;
     margin: 20% auto 0 auto;
@@ -207,6 +242,12 @@ dialog h3 {
 dialog label, dialog input[type="text"] {
     font-size: 1rem;
     margin: 5px;
+    color: var(--text1);
+    background: var(--background);
+}
+dialog input[type="text"] {
+    border: 2px solid var(--main);
+    border-radius: 5px;
 }
 dialog img {
     float: right;
@@ -216,7 +257,7 @@ dialog img {
 }
 .savebtn {
     background-color: var(--main);
-    color: white;
+    color: var(--text);
     font-family: monospace;
     font-size: 1rem;
     border: none;
@@ -232,18 +273,18 @@ dialog img {
     box-shadow: 0 0px 0;
 }
 .savebtn.red {
-    background: red;
-    box-shadow: 0 7px 0 #960000;
+    background: var(--red1);
+    box-shadow: 0 7px 0 var(--red2);
 }
 .savebtn.red:active {
     transform: translateY(7px);
-    box-shadow: 0 0px 0 #960000;
+    box-shadow: 0 0px 0 var(--red2);
 }
 div.upload {
     width: 24rem;
     height: 7rem;
     margin: 3rem 3rem 0 3rem;
-    background: #eee;
+    background: var(--back2);
     border: 3px dashed #4d4d4d;
 }
 .upload p {

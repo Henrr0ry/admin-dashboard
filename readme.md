@@ -15,4 +15,5 @@ FLUSH PRIVILEGES;
 ### To Do List
 - [ ] add login and logout event to log
 - [ ] smart datatype preload
-- [ ] litle redesign
+- [x] litle redesign
+- [x] add dark mode
