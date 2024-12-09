@@ -24,7 +24,7 @@
     <head>
         <title><?= $lang_admin_login ?></title>
         <meta charset="UTF-8">
-        <meta http-equiv="Cache-Control" content="no-store" />
+        <!-- <meta http-equiv="Cache-Control" content="no-store" /> -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="admin-style.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">

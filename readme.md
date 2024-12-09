@@ -13,7 +13,9 @@ FLUSH PRIVILEGES;
 ```
 
 ### To Do List
-- [ ] add login and logout event to log
+- [x] add login and logout event to log
 - [ ] smart datatype preload
 - [x] litle redesign
 - [x] add dark mode
+- [ ] create / delete / edit tables
+- [ ] add / remove / change  accounts

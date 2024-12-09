@@ -17,6 +17,7 @@ function switchMode() {
         document.documentElement.style.setProperty("--red1", "#960000");
         document.documentElement.style.setProperty("--red2", "#570000");
         document.documentElement.style.setProperty("--text1", "#ececec");
+        document.documentElement.style.setProperty("--shadow", "black");
         document.documentElement.style.background = "url(admin-image/admin-back-dark.png)";
         
         document.body.classList.add("invert");
@@ -33,6 +34,7 @@ function switchMode() {
         document.documentElement.style.setProperty("--red1", "red");
         document.documentElement.style.setProperty("--red2", "#960000");
         document.documentElement.style.setProperty("--text1", "black");
+        document.documentElement.style.setProperty("--shadow", "lightgray");
         document.documentElement.style.background = "url(admin-image/admin-back.png)";
 
         document.body.classList.remove("invert");

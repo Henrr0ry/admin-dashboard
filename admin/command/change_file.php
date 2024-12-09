@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && is_dir($directory) && isset($_FILES[
         echo "Chyba při nahrávání souboru.";
     }
 }
-
+ 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteFile"])) {
     $filename = $directory . $_POST["deleteFile"];
     if (file_exists($filename)) {

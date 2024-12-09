@@ -1,7 +1,7 @@
 :root {
     --main: lime;
     --second: #02c702;
-    --shadow: gray;
+    --shadow: lightgray;
     --background: white;
     --bg1: #ddd;
     --red1: red;
@@ -105,6 +105,7 @@ h3 {
     border: none;
     border-radius: 50%;
     background: var(--background);
+    cursor: pointer;
 }
 .dark-btn img {
     width: 2rem;
@@ -221,7 +222,8 @@ dialog {
     width: 100vw;
     top: 0;
     left: 0;
-    background: #33333355;
+    background: #333333a1;
+    border: 3px solid #00000000 !important;
 }
 dialog .dialog {
     border: 3px solid var(--second);
@@ -239,15 +241,21 @@ dialog h3 {
     margin-right: 4rem;
     margin-top: 2rem;
 }
-dialog label, dialog input[type="text"] {
+dialog label, dialog input[type="text"], dialog input[type="number"],
+dialog input[type="email"], dialog input[type="checkbox"] {
     font-size: 1rem;
     margin: 5px;
     color: var(--text1);
     background: var(--background);
 }
-dialog input[type="text"] {
+dialog input[type="text"], dialog input[type="number"],
+dialog input[type="email"], dialog input[type="checkbox"] {
     border: 2px solid var(--main);
     border-radius: 5px;
+}
+dialog input[type="text"]:disabled, dialog input[type="number"]:disabled,
+dialog input[type="email"]:disabled, dialog input[type="checkbox"]:disabled {
+    background: var(--shadow);
 }
 dialog img {
     float: right;

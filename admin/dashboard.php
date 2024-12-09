@@ -13,7 +13,7 @@
     <head>
         <title><?= $lang_admin_dashboard ?></title>
         <meta http-equiv="refresh" content="600">
-        <meta http-equiv="Cache-Control" content="no-store" />
+        <!-- <meta http-equiv="Cache-Control" content="no-store" /> -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="admin-style.css">
@@ -89,7 +89,8 @@
                     if ($tablesResult->num_rows > 0) {
                         while ($tableRow = $tablesResult->fetch_row()) {
                             $tableName = $tableRow[0];
-                            $columnNames= "[";
+                            $columnNames = "[";
+                            $columnTypes = "[";
 
                             if (str_contains($tableName, "uploads") || str_contains($tableName, "log") || str_contains($tableName, "profile") || str_contains($tableName, "analytics"))
                                 continue;
@@ -101,16 +102,20 @@
                                 while ($columnRow = $columnsResult->fetch_assoc()) {
                                     $columnName = $columnRow['Field'];
                                     echo "<th>$columnName</th>";
-                                    if ($columnName != "ID")
+                                    if ($columnName != "ID") {
                                         $columnNames .=  "'" . $columnRow['Field'] . "',";
+                                        $columnTypes .= "'" . $columnRow['Type'] . "',";
+                                    }
                                 }
                                 $columnNames = rtrim($columnNames, ", ");
+                                $columnTypes = rtrim($columnTypes, ", ");
                             } else {
                                 echo "Table not have any column!";
                             }
                             $columnNames .= "]";
+                            $columnTypes .= "]";
                             echo "<th class=\"icon-cell\"><img class=\"refresh icon\" src=\"admin-image/refresh.png\" onclick=\"loadData('$tableName')\" alt=\"$lang_refresh\" title=\"$lang_refresh\" draggable=false></th>";
-                            echo "<th class=\"icon-cell\"><img src=\"admin-image/add.png\" onclick=\"addeditRow('$tableName', $columnNames)\" alt=\"$lang_add\" title=\"$lang_add\" class=\"icon\" draggable=false></th>";
+                            echo "<th class=\"icon-cell\"><img src=\"admin-image/add.png\" onclick=\"addeditRow('$tableName', $columnNames, $columnTypes)\" alt=\"$lang_add\" title=\"$lang_add\" class=\"icon\" draggable=false></th>";
                             echo "</tr></thead><tbody id=\"$tableName\"></tbody></table>";
                         }
                     } else {
