@@ -56,7 +56,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>
+                                <td class="fill-bg">
                                     <textarea id="log" disabled></textarea>
                                 </td>
                             </tr>

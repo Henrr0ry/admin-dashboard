@@ -18,6 +18,23 @@ html {
 body {
     margin: 0;
 }
+/*SCROLLBAR*/
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--second);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--main);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--main), #eee);
+}
 /*LOGIN*/
 .login {
     width: 20rem;
@@ -215,6 +232,9 @@ th:first-child, td:first-child{
 }
 .invert .icon {
     filter: invert(1);
+}
+.fill-bg {
+    background: var(--second);
 }
 /*DIALOG*/
 dialog {
