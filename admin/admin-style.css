@@ -273,6 +273,9 @@ dialog input[type="email"], dialog input[type="checkbox"] {
     border: 2px solid var(--main);
     border-radius: 5px;
 }
+dialog input[type="checkbox"] {
+    margin-right: 12.7rem !important;
+}
 dialog input[type="text"]:disabled, dialog input[type="number"]:disabled,
 dialog input[type="email"]:disabled, dialog input[type="checkbox"]:disabled {
     background: var(--shadow);

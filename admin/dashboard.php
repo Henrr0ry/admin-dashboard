@@ -116,7 +116,7 @@
                             $columnTypes .= "]";
                             echo "<th class=\"icon-cell\"><img class=\"refresh icon\" src=\"admin-image/refresh.png\" onclick=\"loadData('$tableName')\" alt=\"$lang_refresh\" title=\"$lang_refresh\" draggable=false></th>";
                             echo "<th class=\"icon-cell\"><img src=\"admin-image/add.png\" onclick=\"addeditRow('$tableName', $columnNames, $columnTypes)\" alt=\"$lang_add\" title=\"$lang_add\" class=\"icon\" draggable=false></th>";
-                            echo "</tr></thead><tbody id=\"$tableName\"></tbody></table>";
+                            echo "</tr></thead><tbody id=\"$tableName\" types=\"$columnTypes\"></tbody></table>";
                         }
                     } else {
                         echo "Database not have any table!";
@@ -166,6 +166,8 @@
         function loadData(tableName) {
             var tableBody = document.getElementById(tableName);
             tableBody.innerHTML = "";
+            types = tableBody.getAttribute("types");
+            var typesText = types.replaceAll("\'", "\"");
 
             var phpdata = new FormData();
             phpdata.append('table', tableName);
@@ -180,7 +182,7 @@
                         for (var key in row) {
                             newRow.innerHTML += "<td>" + row[key] + "</td>";
                         }
-                        newRow.innerHTML += "<td><img src=\"admin-image\/edit.png\" onclick='editRow(\"" + tableName + "\"," + row.ID + ", " + JSON.stringify(row) + ")' alt=\"edit\" title=\"Edit\" class=\"icon\" draggable=false></td>";
+                        newRow.innerHTML += "<td><img src=\"admin-image\/edit.png\" onclick='editRow(\"" + tableName + "\"," + row.ID + ", " + JSON.stringify(row) + ", " + typesText + ")' alt=\"edit\" title=\"Edit\" class=\"icon\" draggable=false></td>";
                         newRow.innerHTML += "<td><img src=\"admin-image\/delete.png\" onclick='deleteRow(\"" + tableName + "\", " + row.ID + ")' alt=\"Delete\" title=\"Delete\" class=\"icon\" draggable=false></td>";
                         tableBody.appendChild(newRow);
                     });
@@ -189,19 +191,40 @@
             xhr.send(phpdata);
         }
         
-        function editRow(tableName, id, data) {
+        function editRow(tableName, id, data, types=[]) {
             var dialog = document.getElementById("edit");
             document.getElementById("edittable").value = tableName;
             document.getElementById("editid").value = id;
             var inputContainer = document.getElementById('inputContainer');
 
             inputContainer.innerHTML = "";
+
+            var i = -1;
             for (const key in data) {
             if (data.hasOwnProperty(key)) {
                 const input = document.createElement('input');
-                input.type = 'text';
+
+                if (i > -1) {
+                    if (types[i].includes("tinyint")) {
+                        input.type = 'checkbox';
+                    } else if (types[i].includes("int")) {
+                        input.type = 'number';
+                    } else if (types[i].includes("date")) {
+                        input.type = 'date';
+                    } else {
+                        input.type = 'text';
+                    }
+                } else {
+                    input.type = 'number';
+                }
+                i++;
+
                 input.id = `${key}`;
                 input.value = data[key];
+                if (input.type == "checkbox") {
+                    if (data[key] == "1")
+                        input.checked = true;
+                }
                 if (key === 'ID') {
                     input.disabled = true;
                 }
@@ -265,7 +288,12 @@
                     phpdata.append('table', document.getElementById("edittable").value);
                     phpdata.append('id', document.getElementById("editid").value);
                     phpdata.append('name', input.id);
-                    phpdata.append('content', input.value);
+                    if (input.getAttribute('type') == "checkbox") {
+                        phpdata.append('content', input.checked == true ? "1" : "0");
+                    }
+                    else {
+                        phpdata.append('content', input.value);
+                    }
 
                     var xhr = new XMLHttpRequest();
                     xhr.open("POST", "command/edit.php", true);
@@ -279,18 +307,28 @@
             }, 500);
         }
 
-        window.onload = function() {
+        /*window.onload = function() {
             //loadData("opentable");
-        };
+        };*/
 
-        function addeditRow(tableName, data) {
+        function addeditRow(tableName, data, types) {
             var dialog = document.getElementById("add");
             document.getElementById("addtable").value = tableName;
             var addContainer = document.getElementById('addContainer');
             addContainer.innerHTML = "";
             for (let i = 0; i < data.length; i++) {
                 const input = document.createElement('input');
-                input.type = 'text';
+                
+                if (types[i].includes("tinyint")) {
+                    input.type = 'checkbox';
+                } else if (types[i].includes("int")) {
+                    input.type = 'number';
+                } else if (types[i].includes("date")) {
+                    input.type = 'date';
+                } else {
+                    input.type = 'text';
+                }
+
                 input.id = `${data[i]}`;
                 
                 const label = document.createElement('label');
@@ -325,7 +363,13 @@
                     const id = input.getAttribute('data-id');
                     const value = input.getAttribute('data-value');
                     names += input.id + ", ";
-                    content += "\"" + input.value + "\", ";
+
+                    if (input.getAttribute('type') == "checkbox") {
+                        content += "\"" + (input.checked == "true" ? "1" : "0")+ "\", ";
+                    }
+                    else {
+                        content += "\"" + input.value + "\", ";
+                    }
                 }
             });
             names = names.slice(0, -2);
