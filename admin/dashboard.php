@@ -64,7 +64,7 @@
                     </table>
                 </div>
                 <?php } if ($profile["analytics"]) { ?>
-                <div>
+                <div class="side">
                     <table>
                         <thead>
                             <tr>
@@ -73,8 +73,25 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>
-                                    <textareadisabled></textarea>
+                                <td class="fill-bg">
+                                    <textarea disabled></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <?php } if ($profile["users"]) { ?>
+                <div class="side">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><?= $lang_users ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fill-bg">
+                                    <textarea disabled></textarea>
                                 </td>
                             </tr>
                         </tbody>

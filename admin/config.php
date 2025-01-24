@@ -24,6 +24,7 @@
     $lang_size = "Size";
     $lang_history = "History Log";
     $lang_analytics = "Analytics";
+    $lang_users = "Profiles";
 
     $lang_db = "MySQL Database";
     $lang_refresh = "Refresh";
@@ -41,5 +42,5 @@
     $lang_close = "Close";
     $lang_save = "Save";
 
-    $version = "1.0"
+    $version = "1.1"
 ?>
