@@ -1,25 +1,25 @@
 # Admin Dashboard
 
 ### Linux commands for installing packages
-```
+```bash
 sudo apt install apache2 php mysql-server libapache2-mod-php php-mysql -y
 ```
 
 ### Linux bash commands for php permission to edit files
-```
+```bash
 sudo chown www-data:www-data /var/www/uploads
 sudo chmod 755 /var/www/uploads
 ```
 
 ### Linux mysql database enable null root password
-```
+```bash
 sudo mysql -u root -p
 update mysql.user set plugin = 'mysql_native_password' where User='root';
 FLUSH PRIVILEGES;
 ```
 
 ### Permisions for uploading
-```
+```bash
 chown www-data:www-data /upload-files
 ```
 
