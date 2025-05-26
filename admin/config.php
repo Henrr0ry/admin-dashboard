@@ -1,14 +1,15 @@
 <?php
     //NO PHP CATCHE
-    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+    /*header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
     header('Cache-Control: post-check=0, pre-check=0', false);
-    header('Pragma: no-cache');
+    header('Pragma: no-cache');*/
 
     //MYSQL DATABASE CONNECTION
-    $conn = new mysqli('localhost', 'root', '', 'temp_db');
-    if ($conn->connect_error) {
-        echo "<h1>Connection Error!</h1>";
-        die("Connection lost: " . $conn->connect_error);
+    try {
+        $conn = new mysqli('localhost', 'root', '', 'admin_db');
+    }
+    catch(mysqli_sql_exception $e) {
+        die("Database Connection Error, Server Error 500: </br>" . $e);
     }
 
     //LANGUAGE PACK
@@ -42,5 +43,5 @@
     $lang_close = "Close";
     $lang_save = "Save";
 
-    $version = "1.1"
+    $version = "1.1";
 ?>

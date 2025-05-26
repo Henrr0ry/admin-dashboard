@@ -1,4 +1,10 @@
 # Admin Dashboard
+
+### Linux commands for installing packages
+```
+sudo apt install apache2 php mysql-server libapache2-mod-php php-mysql -y
+```
+
 ### Linux bash commands for php permission to edit files
 ```
 sudo chown www-data:www-data /var/www/uploads
@@ -19,3 +25,5 @@ FLUSH PRIVILEGES;
 - [x] add dark mode
 - [ ] create / delete / edit tables
 - [ ] add / remove / change  accounts
+- [ ] user access to tables
+- [ ] better file upload
