@@ -13,7 +13,7 @@
     <head>
         <title><?= $lang_admin_dashboard ?></title>
         <meta http-equiv="refresh" content="600">
-        <!-- <meta http-equiv="Cache-Control" content="no-store" /> -->
+        <meta http-equiv="Cache-Control" content="no-store" />
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="admin-style.css">
@@ -38,8 +38,8 @@
                             <tr>
                                 <th><?= $lang_file_name ?></th>
                                 <th><?= $lang_size ?></th>
-                                <th class="icon-cell"><img class="refresh icon" src="admin-image/refresh.png" onclick="loadFiles()" alt="<?= $lang_refresh ?>" title="<?= $lang_refresh ?>" draggable=false></th>
-                                <th class="icon-cell"><img src="admin-image/upload.png" onclick='document.getElementById("upload").showModal();' alt="<?= $lang_upload ?>" title="<?= $lang_upload ?>" class="icon" draggable=false></th>
+                                <th class="icon-cell"><img class="refresh icon noinvert" src="admin-image/refresh.png" onclick="loadFiles()" alt="<?= $lang_refresh ?>" title="<?= $lang_refresh ?>" draggable=false></th>
+                                <th class="icon-cell"><img src="admin-image/upload.png" onclick='document.getElementById("upload").showModal();' alt="<?= $lang_upload ?>" title="<?= $lang_upload ?>" class="icon noinvert" draggable=false></th>
                             </tr>
                         </thead>
                         <tbody id="fileList">
@@ -63,24 +63,26 @@
                         </tbody>
                     </table>
                 </div>
-                <?php } if ($profile["analytics"]) { ?>
+                <?php } if ($profile["edit_tables"]) { ?>
                 <div class="side">
                     <table>
                         <thead>
                             <tr>
-                                <th><?= $lang_analytics ?></th>
+                                <th><?= $lang_tables ?></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td class="fill-bg">
-                                    <textarea disabled></textarea>
+                                    <button class="btn">Edit Table</button> </br>
+                                    <button class="btn">Delete Table</button> </br>
+                                    <button class="btn">Add Table</button> </br>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <?php } if ($profile["users"]) { ?>
+                <?php } if ($profile["change_users"]) { ?>
                 <div class="side">
                     <table>
                         <thead>
@@ -97,7 +99,7 @@
                         </tbody>
                     </table>
                 </div>
-                <?php } if ($profile["tables"]) { ?>
+                <?php } if ($profile["edit_data"]) { ?>
                 <h3 class="big"><?= $lang_db ?></h3>
                 <?php
                     $tablesQuery = "SHOW TABLES";
@@ -109,7 +111,7 @@
                             $columnNames = "[";
                             $columnTypes = "[";
 
-                            if (str_contains($tableName, "uploads") || str_contains($tableName, "log") || str_contains($tableName, "profile") || str_contains($tableName, "analytics"))
+                            if (str_contains($tableName, "uploads") || str_contains($tableName, "log") || str_contains($tableName, "profile") || str_contains($tableName, "table_access"))
                                 continue;
 
                             echo "<table><thead><tr><th colspan=\"20\">$tableName</th></tr><tr>";
@@ -131,8 +133,8 @@
                             }
                             $columnNames .= "]";
                             $columnTypes .= "]";
-                            echo "<th class=\"icon-cell\"><img class=\"refresh icon\" src=\"admin-image/refresh.png\" onclick=\"loadData('$tableName')\" alt=\"$lang_refresh\" title=\"$lang_refresh\" draggable=false></th>";
-                            echo "<th class=\"icon-cell\"><img src=\"admin-image/add.png\" onclick=\"addeditRow('$tableName', $columnNames, $columnTypes)\" alt=\"$lang_add\" title=\"$lang_add\" class=\"icon\" draggable=false></th>";
+                            echo "<th class=\"icon-cell\"><img class=\"refresh icon noinvert\" src=\"admin-image/refresh.png\" onclick=\"loadData('$tableName')\" alt=\"$lang_refresh\" title=\"$lang_refresh\" draggable=false></th>";
+                            echo "<th class=\"icon-cell\"><img src=\"admin-image/add.png\" onclick=\"addeditRow('$tableName', $columnNames, $columnTypes)\" alt=\"$lang_add\" title=\"$lang_add\" class=\"icon noinvert\" draggable=false></th>";
                             echo "</tr></thead><tbody id=\"$tableName\" types=\"$columnTypes\"></tbody></table>";
                         }
                     } else {
@@ -143,39 +145,49 @@
             </section>
         </div>
         <dialog id="edit">
-            <div class="dialog">
+            <div class="dialog dialogSmall">
                 <h3><?= $lang_edit_data ?></h3>
                 <img src="admin-image/close.png" onclick="document.getElementById('edit').close()" alt="<?= $lang_close ?>" title="<?= $lang_close ?>" class="icon" draggable=false><br>
                 <data id="edittable" value=""></data>
                 <data id="editid" value=""></data>
                 <div id="inputContainer"></div>
-                <button onclick="saveRow()" class="savebtn"><?= $lang_save ?></button> <br> <br> <br>
+                <button onclick="saveRow()" class="savebtn"><?= $lang_save ?></button>
             </div>
         </dialog>
         <dialog id="add">
-            <div class="dialog">
+            <div class="dialog dialogSmall">
                 <h3><?= $lang_add_data ?></h3>
                 <img src="admin-image/close.png" onclick="document.getElementById('add').close()" alt="<?= $lang_close ?>" title="<?= $lang_close ?>" class="icon" draggable=false><br>
                 <data id="addtable" value=""></data>
                 <div id="addContainer"></div>
-                <button onclick="addRow()" class="savebtn"><?= $lang_save ?></button> <br> <br> <br>
+                <button onclick="addRow()" class="savebtn"><?= $lang_save ?></button>
             </div>
         </dialog>
         <dialog id="delete" >
-            <div class="dialog">
+            <div class="dialog dialogBig">
                 <h3><?= $lang_delete_data ?></h3>
                 <button class="savebtn" id="cancelDelete"><?= $lang_no ?></button>
-                <button class="savebtn red" id="confirmDelete"><?= $lang_yes ?></button> <br> <br> <br> <br> <br> <br> <br>
+                <button class="savebtn red" id="confirmDelete"><?= $lang_yes ?></button>
             </div>
         </dialog>
         <dialog id="upload">
-            <div class="dialog">
+            <div class="dialog dialogBig">
                 <h3><?= $lang_upload_data ?></h3>
                 <img src="admin-image/close.png" onclick="document.getElementById('upload').close()" alt="<?= $lang_close ?>" title="<?= $lang_close ?>" class="icon" draggable=false><br>
                 <div id="dragfile" class="upload" ondragover="allowDrop(event)" ondrop="drop(event)"><img class="upload" src="admin-image/upload.png"><p><input id="file" type="file"></p></div>
-                <button class="savebtn" onclick="saveFileToServer()"><?= $lang_upload ?></button> <br> <br> <br>
+                <button class="savebtn" onclick="saveFileToServer()"><?= $lang_upload ?></button>
             </div>
         </dialog>
+
+        <dialog id="add-table">
+            <div class="dialog dialogSmall">
+                <h3><?= $lang_add ?><?= $lang_table ?></h3>
+                <img src="admin-image/close.png" onclick="document.getElementById('add-table').close()" alt="<?= $lang_close ?>" title="<?= $lang_close ?>" class="icon" draggable=false><br>
+                <div id="dragfile" class="upload" ondragover="allowDrop(event)" ondrop="drop(event)"><img class="upload" src="admin-image/upload.png"><p><input id="file" type="file"></p></div>
+                <button class="savebtn" onclick="saveFileToServer()"><?= $lang_upload ?></button>
+            </div>
+        </dialog>
+
         <script>
         
         const name = "<?= $profile["name"] ?>";
@@ -216,13 +228,15 @@
 
             inputContainer.innerHTML = "";
 
-            var i = -1;
+            var i = 0;
             for (const key in data) {
             if (data.hasOwnProperty(key)) {
                 const input = document.createElement('input');
 
                 if (i > -1) {
-                    if (types[i].includes("tinyint")) {
+                    if (types[i].includes("varchar")) {
+                        input.type = 'text';
+                    } else if (types[i].includes("tinyint")) {
                         input.type = 'checkbox';
                     } else if (types[i].includes("int")) {
                         input.type = 'number';
@@ -232,7 +246,7 @@
                         input.type = 'text';
                     }
                 } else {
-                    input.type = 'number';
+                    input.type = 'text';
                 }
                 i++;
 

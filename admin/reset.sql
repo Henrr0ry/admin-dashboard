@@ -16,6 +16,7 @@ CREATE TABLE profile (
 );
 
 CREATE TABLE log (
+    ID int AUTO_INCREMENT PRIMARY KEY,
     log VARCHAR(100)
 );
 

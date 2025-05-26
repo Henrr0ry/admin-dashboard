@@ -24,8 +24,8 @@
     $lang_file_name = "Name";
     $lang_size = "Size";
     $lang_history = "History Log";
-    $lang_analytics = "Analytics";
-    $lang_users = "Profiles";
+    $lang_tables = "Change Tables";
+    $lang_users = "Change Profiles";
 
     $lang_db = "MySQL Database";
     $lang_refresh = "Refresh";
@@ -33,6 +33,7 @@
     $lang_delete = "Delete";
     $lang_edit = "Edit";
     $lang_add = "Add";
+    $lang_table = "Table";
 
     $lang_edit_data = "Edit Data";
     $lang_add_data = "Add data";
@@ -43,5 +44,5 @@
     $lang_close = "Close";
     $lang_save = "Save";
 
-    $version = "1.1";
+    $version = "1.2";
 ?>

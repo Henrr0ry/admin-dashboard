@@ -18,6 +18,11 @@ update mysql.user set plugin = 'mysql_native_password' where User='root';
 FLUSH PRIVILEGES;
 ```
 
+### Permisions for uploading
+```
+chown www-data:www-data /upload-files
+```
+
 ### To Do List
 - [x] add login and logout event to log
 - [x] smart datatype preload
