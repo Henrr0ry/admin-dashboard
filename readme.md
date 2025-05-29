@@ -28,7 +28,8 @@ chown www-data:www-data /upload-files
 - [x] smart datatype preload
 - [x] litle redesign
 - [x] add dark mode
-- [ ] create / delete / edit tables
+- [x] create / delete / edit tables
+- [x] sql console
 - [ ] add / remove / change  accounts
 - [ ] user access to tables
-- [ ] better file upload
+- [x] better file upload

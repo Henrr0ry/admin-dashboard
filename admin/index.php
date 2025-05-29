@@ -7,7 +7,7 @@
                     if (strcmp($_POST["name"], $profile["name"]) == 0 && password_verify($_POST["passwd"], $profile["password"])) {
                         //LOG
                         $log = "('" . date("H:i:s d.m.Y") . " - " . $_POST["name"] . " login" . "')";
-                        $sql = "INSERT INTO log VALUES $log";
+                        $sql = "INSERT INTO log (log) VALUES ($log)";
                         $conn->query($sql);
 
                         //LOGIN

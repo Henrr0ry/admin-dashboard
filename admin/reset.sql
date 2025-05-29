@@ -9,15 +9,15 @@ CREATE TABLE profile (
     name VARCHAR(100) NOT NULL,
     password VARCHAR(100) NOT NULL,
     change_users BOOLEAN NOT NULL,
-    logs BOOLEAN NOT NULL,
-    files BOOLEAN NOT NULL,
-    edit_tables BOOLEAN NOT NULL,
-    edit_data BOOLEAN NOT NULL
+    show_logs BOOLEAN NOT NULL,
+    show_files BOOLEAN NOT NULL,
+    show_console BOOLEAN NOT NULL,
+    show_tables BOOLEAN NOT NULL
 );
 
 CREATE TABLE log (
     ID int AUTO_INCREMENT PRIMARY KEY,
-    log VARCHAR(100)
+    log VARCHAR(1000)
 );
 
 CREATE TABLE table_access (

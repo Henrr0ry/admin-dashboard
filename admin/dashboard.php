@@ -28,7 +28,7 @@
                 <button class="savebtn red" onclick="logout()">Log Out</button>
             </div>
             <section>
-                <?php if ($profile["files"]) { ?>
+                <?php if ($profile["show_files"]) { ?>
                 <div class="side">
                     <table>
                         <thead>
@@ -46,7 +46,7 @@
                         </tbody>
                     </table>
                 </div>
-                <?php } if ($profile["logs"]) { ?>
+                <?php } if ($profile["show_logs"]) { ?>
                 <div class="side">
                     <table>
                         <thead>
@@ -63,24 +63,72 @@
                         </tbody>
                     </table>
                 </div>
-                <?php } if ($profile["edit_tables"]) { ?>
+                <?php } if ($profile["show_console"]) { ?>
                 <div class="side">
                     <table>
                         <thead>
                             <tr>
-                                <th><?= $lang_tables ?></th>
+                                <th><?= $lang_console ?></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td class="fill-bg">
-                                    <button class="btn">Edit Table</button> </br>
-                                    <button class="btn">Delete Table</button> </br>
-                                    <button class="btn">Add Table</button> </br>
+                                    <div class="small">
+                                        <button class="btn" onclick="add_command(0)">CREATE TABLE</button>
+                                        <button class="btn" onclick="add_command(1)">DROP TABLE</button>
+                                        <button class="btn" onclick="add_command(2)">INSERT INTO</button>
+                                        <button class="btn" onclick="add_command(3)">DELETE</button>
+                                        <button class="btn" onclick="run_sql_command()" style="background: var(--red1)">RUN</button> <br>
+                                        <button class="btn" onclick="add_command(4)">SELECT ALL</button>
+                                        <button class="btn" onclick="add_command(5)">ALTER</button>
+                                        <button class="btn" onclick="add_command(6)">ADD COLLUMN</button>
+                                        <button class="btn" onclick="add_command(7)">DROP COLLUMN</button>
+                                    </div>
+                                    <textarea id="console_input" class="half" placeholder="SQL Commands to run"></textarea> <br>
+                                    <textarea id="console_output" class="small" placeholder="SQL Console output"></textarea>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                    <script>
+                        var commands = [
+                            "CREATE TABLE <table>\n(\nID int AUTO_INCREMENT PRIMARY KEY,\n\n)",
+                            "DROP TABLE <table>",
+                            "INSERT INTO <table>\n(\n\n)\nVALUES\n(\n\n)",
+                            "DELETE FROM <table>",
+                            "SELECT * FROM <table>",
+                            "ALTER TABLE <table>\nCHANGE\n<collumn>\n<new_collumn>\n<datatype>",
+                            "ALTER TABLE <table>\nADD <new_collumn>\n<datatype>",
+                            "ALTER TABLE <table>\nDROP <collumn>"
+                        ];
+
+                        function add_command(id) {
+                            document.getElementById("console_input").value += commands[id];
+                        }
+
+                        function run_sql_command() {
+                            var command = document.getElementById("console_input").value;
+
+                            var phpdata = new FormData();
+                            phpdata.append('name', name);
+                            phpdata.append('passwd', "<?= $_POST["passwd"] ?>");
+                            phpdata.append('command', command);
+
+                            console.log(name + " run command: " + command);
+                            log(name + " run command: " + command);
+
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("POST", "command/command.php", true);
+                            xhr.onreadystatechange = function() {
+                                if (xhr.readyState === 4 && xhr.status === 200) {
+                                    var data = xhr.responseText;
+                                    document.getElementById("console_output").value = data;
+                                }
+                            };
+                            xhr.send(phpdata);
+                        }
+                    </script>
                 </div>
                 <?php } if ($profile["change_users"]) { ?>
                 <div class="side">
@@ -99,7 +147,8 @@
                         </tbody>
                     </table>
                 </div>
-                <?php } if ($profile["edit_data"]) { ?>
+                <div class="full-side">
+                <?php } if ($profile["show_tables"]) { ?>
                 <h3 class="big"><?= $lang_db ?></h3>
                 <?php
                     $tablesQuery = "SHOW TABLES";
@@ -142,6 +191,7 @@
                     }
                 ?>
                 <?php } ?>
+                </div>
             </section>
         </div>
         <dialog id="edit">
@@ -209,7 +259,11 @@
                     data.forEach(function(row) {
                         var newRow = document.createElement("tr");
                         for (var key in row) {
-                            newRow.innerHTML += "<td>" + row[key] + "</td>";
+                                let cellText = row[key];
+                                if (typeof cellText === "string" && cellText.length > 50) {
+                                    cellText = cellText.substring(0, 50) + "...";
+                                }
+                                newRow.innerHTML += "<td>" + cellText + "</td>";
                         }
                         newRow.innerHTML += "<td><img src=\"admin-image\/edit.png\" onclick='editRow(\"" + tableName + "\"," + row.ID + ", " + JSON.stringify(row) + ", " + typesText + ")' alt=\"edit\" title=\"Edit\" class=\"icon\" draggable=false></td>";
                         newRow.innerHTML += "<td><img src=\"admin-image\/delete.png\" onclick='deleteRow(\"" + tableName + "\", " + row.ID + ")' alt=\"Delete\" title=\"Delete\" class=\"icon\" draggable=false></td>";
@@ -228,7 +282,7 @@
 
             inputContainer.innerHTML = "";
 
-            var i = 0;
+            var i = -1;
             for (const key in data) {
             if (data.hasOwnProperty(key)) {
                 const input = document.createElement('input');
@@ -242,6 +296,9 @@
                         input.type = 'number';
                     } else if (types[i].includes("date")) {
                         input.type = 'date';
+                    } else if (types[i].includes("longblob")) {
+                        input.type = 'text';
+                        input.disabled = true;
                     } else {
                         input.type = 'text';
                     }
@@ -356,6 +413,8 @@
                     input.type = 'number';
                 } else if (types[i].includes("date")) {
                     input.type = 'date';
+                } else if (types[i].includes("longblob")) {
+                    input.type = 'file';
                 } else {
                     input.type = 'text';
                 }
@@ -384,12 +443,12 @@
             dialog.showModal();
         }
 
-        function addRow() {
+        async function addRow() {
             const inputContainer = document.getElementById('addContainer');
             const inputs = inputContainer.querySelectorAll('input');
             let names = "(";
             let content = "(";
-            inputs.forEach(input => {
+            for (const input of inputs) {
                 if (input.id != "ID"){
                     const id = input.getAttribute('data-id');
                     const value = input.getAttribute('data-value');
@@ -397,12 +456,15 @@
 
                     if (input.getAttribute('type') == "checkbox") {
                         content += "\"" + (input.checked == "true" ? "1" : "0")+ "\", ";
-                    }
-                    else {
+                    } else if (input.getAttribute('type') == 'file') {
+                        var file1 = input.files[0];
+                        const base64 = await getBase64FromFile(file1);
+                        content += "\"" + base64 + "\", ";
+                    } else {
                         content += "\"" + input.value + "\", ";
                     }
                 }
-            });
+            };
             names = names.slice(0, -2);
             content = content.slice(0, -2);
             names += ")";
@@ -422,9 +484,23 @@
             setTimeout(() => {
                 document.getElementById("add").close();
                 loadData(document.getElementById("addtable").value);
-                log("adden data to table " + document.getElementById("addtable").value + " " + content + " by " + name);
+                log("adden data to table " + document.getElementById("addtable").value + " by " + name);
             }, 500);
         }
+        //GET BASE64
+        function getBase64FromFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64 = reader.result;
+                    resolve(base64);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+
         //LOAD LOG
         function loadLog() {
             setTimeout(() => {

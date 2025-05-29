@@ -24,7 +24,7 @@
     $lang_file_name = "Name";
     $lang_size = "Size";
     $lang_history = "History Log";
-    $lang_tables = "Change Tables";
+    $lang_console = "MySQL Console";
     $lang_users = "Change Profiles";
 
     $lang_db = "MySQL Database";
