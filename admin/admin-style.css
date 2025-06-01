@@ -172,6 +172,7 @@ section {
     text-align: left;
     background: var(--second);
     border-radius: 0.5rem;
+    overflow: auto;
 }
 .full-side table {
     margin: 10px !important;
@@ -218,6 +219,18 @@ tbody {
 tbody tr:nth-child(even) {
     background: var(--bg1)
 }
+tr:first-child td:first-child {
+    border-top-left-radius: 0.4rem !important;
+}
+tr:first-child td:last-child {
+    border-top-right-radius: 0.4rem !important;
+}
+tr:last-child td:first-child {
+    border-bottom-left-radius: 0.4rem !important;
+}
+tr:last-child td:last-child {
+    border-bottom-right-radius: 0.4rem !important;
+}
 table img {
     width: 1.5rem;
     height: auto;
@@ -257,6 +270,12 @@ th:first-child, td:first-child{
 .fill-bg {
     background: var(--second);
 }
+.profile-table {
+    text-align: center;
+}
+.profile-table td:nth-child(2), .profile-table th:nth-child(2) {
+    text-align: left;
+}
 /*DIALOG*/
 dialog {
     height: 100vh;
@@ -271,8 +290,8 @@ dialog .dialog {
     border-radius: 20px;
     background: var(--background);
     width: 30rem;
-    margin: 20% auto 0 auto;
-    height: 40%;
+    margin: 5% auto 0 auto;
+    height: 60%;
 }
 dialog h3 {
     float: left;

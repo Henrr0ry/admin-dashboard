@@ -30,6 +30,6 @@ chown www-data:www-data /upload-files
 - [x] add dark mode
 - [x] create / delete / edit tables
 - [x] sql console
-- [ ] add / remove / change  accounts
-- [ ] user access to tables
+- [x] add / remove / change  accounts
+- [x] user access to tables
 - [x] better file upload

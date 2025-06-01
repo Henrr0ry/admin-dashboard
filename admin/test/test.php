@@ -1,8 +1,8 @@
 <?php
-include "command/connect.php";
+include "../command/connect.php";
 echo "hello";
 
-$dataQuery = "SELECT data FROM test2";
+$dataQuery = "SELECT data FROM test";
 $dataResult = $conn->query($dataQuery);
 
 foreach ($dataResult as $row) {

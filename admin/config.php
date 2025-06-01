@@ -26,6 +26,7 @@
     $lang_history = "History Log";
     $lang_console = "MySQL Console";
     $lang_users = "Change Profiles";
+    $lang_database_settings = "Change Database table permissions";
 
     $lang_db = "MySQL Database";
     $lang_refresh = "Refresh";
@@ -44,5 +45,5 @@
     $lang_close = "Close";
     $lang_save = "Save";
 
-    $version = "1.2";
+    $version = "2.0";
 ?>

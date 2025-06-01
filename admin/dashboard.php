@@ -78,12 +78,13 @@
                                         <button class="btn" onclick="add_command(0)">CREATE TABLE</button>
                                         <button class="btn" onclick="add_command(1)">DROP TABLE</button>
                                         <button class="btn" onclick="add_command(2)">INSERT INTO</button>
-                                        <button class="btn" onclick="add_command(3)">DELETE</button>
+                                        <button class="btn" onclick="add_command(3)">UPDATE</button>
+                                        <button class="btn" onclick="add_command(4)">DELETE</button>
                                         <button class="btn" onclick="run_sql_command()" style="background: var(--red1)">RUN</button> <br>
-                                        <button class="btn" onclick="add_command(4)">SELECT ALL</button>
-                                        <button class="btn" onclick="add_command(5)">ALTER</button>
-                                        <button class="btn" onclick="add_command(6)">ADD COLLUMN</button>
-                                        <button class="btn" onclick="add_command(7)">DROP COLLUMN</button>
+                                        <button class="btn" onclick="add_command(5)">SELECT ALL</button>
+                                        <button class="btn" onclick="add_command(6)">ALTER</button>
+                                        <button class="btn" onclick="add_command(7)">ADD COLLUMN</button>
+                                        <button class="btn" onclick="add_command(8)">DROP COLLUMN</button>
                                     </div>
                                     <textarea id="console_input" class="half" placeholder="SQL Commands to run"></textarea> <br>
                                     <textarea id="console_output" class="small" placeholder="SQL Console output"></textarea>
@@ -96,11 +97,12 @@
                             "CREATE TABLE <table>\n(\nID int AUTO_INCREMENT PRIMARY KEY,\n\n)",
                             "DROP TABLE <table>",
                             "INSERT INTO <table>\n(\n\n)\nVALUES\n(\n\n)",
+                            "UPDATE <table>\nSET <column> = <value>\nWHERE",
                             "DELETE FROM <table>",
                             "SELECT * FROM <table>",
                             "ALTER TABLE <table>\nCHANGE\n<collumn>\n<new_collumn>\n<datatype>",
                             "ALTER TABLE <table>\nADD <new_collumn>\n<datatype>",
-                            "ALTER TABLE <table>\nDROP <collumn>"
+                            "ALTER TABLE <table>\nDROP <collumn>",
                         ];
 
                         function add_command(id) {
@@ -115,7 +117,7 @@
                             phpdata.append('passwd', "<?= $_POST["passwd"] ?>");
                             phpdata.append('command', command);
 
-                            console.log(name + " run command: " + command);
+                            //console.log(name + " run command: " + command);
                             log(name + " run command: " + command);
 
                             var xhr = new XMLHttpRequest();
@@ -132,27 +134,73 @@
                 </div>
                 <?php } if ($profile["change_users"]) { ?>
                 <div class="side">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th><?= $lang_users ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="fill-bg">
-                                    <textarea disabled></textarea>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <?php                          
+                            // GENERATE PROFILE TABLE
+                            $tableName = "profile";
+                            $columnNames = "[";
+                            $columnTypes = "[";
+
+                            echo "<table class='profile-table'><thead><tr><th colspan=\"20\">$lang_users</th></tr><tr>";
+                            $columnsQuery = "SHOW COLUMNS FROM $tableName";
+                            $columnsResult = $conn->query($columnsQuery);
+                            if ($columnsResult->num_rows > 0) {
+                                while ($columnRow = $columnsResult->fetch_assoc()) {
+                                    $columnName = $columnRow['Field'];
+
+                                    if ($columnName == "change_users")
+                                        echo "<th><img class='icon noinvert' src='admin-image/user.png' alt='change_users' title='$lang_users'></th>";
+                                    else if ($columnName == "show_logs")
+                                        echo "<th><img class='icon noinvert' src='admin-image/history.png' alt='show_logs' title='$lang_history'></th>";
+                                    else if ($columnName == "show_files")
+                                        echo "<th><img class='icon noinvert' src='admin-image/folder.png' alt='show_files' title='$lang_files'></th>";
+                                    else if ($columnName == "show_console")
+                                        echo "<th><img class='icon noinvert' src='admin-image/console.png' alt='show_console' title='$lang_console'></th>";
+                                    else if ($columnName == "show_tables")
+                                        echo "<th><img class='icon noinvert' src='admin-image/database.png' alt='show_tables' title='$lang_db'></th>";
+                                    else if ($columnName != "password" && $columnName != "display_name" && $columnName != "icon") {
+                                        echo "<th>$columnName</th>";
+                                    }
+
+                                    if ($columnName != "ID") {
+                                        $columnNames .=  "'" . $columnRow['Field'] . "',";
+                                        $columnTypes .= "'" . $columnRow['Type'] . "',";
+                                    }
+                                }
+                                echo "<th><img onclick=\"\" class='icon noinvert' src='admin-image/database-settings.png' alt='$lang_database_settings' title='$lang_database_settings'></th>";
+                                $columnNames = rtrim($columnNames, ", ");
+                                $columnTypes = rtrim($columnTypes, ", ");
+                            } else {
+                                echo "Table not have any column!";
+                            }
+                            $columnNames .= "]";
+                            $columnTypes .= "]";
+                            echo "<th class=\"icon-cell\"><img class=\"refresh icon noinvert\" src=\"admin-image/refresh.png\" onclick=\"loadData('$tableName')\" alt=\"$lang_refresh\" title=\"$lang_refresh\" draggable=false></th>";
+                            echo "<th class=\"icon-cell\"><img src=\"admin-image/add.png\" onclick=\"addeditRow('$tableName', $columnNames, $columnTypes)\" alt=\"$lang_add\" title=\"$lang_add\" class=\"icon noinvert\" draggable=false></th>";
+                            echo "</tr></thead><tbody id=\"$tableName\" types=\"$columnTypes\"></tbody></table>";
+                ?>
                 </div>
-                <div class="full-side">
                 <?php } if ($profile["show_tables"]) { ?>
+                <div class="full-side">
                 <h3 class="big"><?= $lang_db ?></h3>
                 <?php
                     $tablesQuery = "SHOW TABLES";
                     $tablesResult = $conn->query($tablesQuery);
+
+
+                    $permissionQuery = "SELECT * FROM table_access WHERE profile_id = " . $profile['ID'];
+                    $permissionResult = $conn->query($permissionQuery);
+
+                    $is_god = false;
+                    $access_arr = array();
+
+                    if ($permissionResult->num_rows > 0) 
+                    {
+                        while ($columnRow = $permissionResult->fetch_assoc()) 
+                        {
+                            $is_god = $columnRow["is_god"];
+                            $access_arr = json_decode($columnRow["access_arr"]);
+                        }
+                    }
 
                     if ($tablesResult->num_rows > 0) {
                         while ($tableRow = $tablesResult->fetch_row()) {
@@ -162,6 +210,12 @@
 
                             if (str_contains($tableName, "uploads") || str_contains($tableName, "log") || str_contains($tableName, "profile") || str_contains($tableName, "table_access"))
                                 continue;
+
+                            if (!$is_god) 
+                            {
+                                if (!in_array($tableName, $access_arr))
+                                    continue;
+                            }
 
                             echo "<table><thead><tr><th colspan=\"20\">$tableName</th></tr><tr>";
                             $columnsQuery = "SHOW COLUMNS FROM $tableName";
@@ -229,50 +283,76 @@
             </div>
         </dialog>
 
-        <dialog id="add-table">
-            <div class="dialog dialogSmall">
-                <h3><?= $lang_add ?><?= $lang_table ?></h3>
-                <img src="admin-image/close.png" onclick="document.getElementById('add-table').close()" alt="<?= $lang_close ?>" title="<?= $lang_close ?>" class="icon" draggable=false><br>
-                <div id="dragfile" class="upload" ondragover="allowDrop(event)" ondrop="drop(event)"><img class="upload" src="admin-image/upload.png"><p><input id="file" type="file"></p></div>
-                <button class="savebtn" onclick="saveFileToServer()"><?= $lang_upload ?></button>
-            </div>
-        </dialog>
-
         <script>
-        
         const name = "<?= $profile["name"] ?>";
         
-        function loadData(tableName) {
-            var tableBody = document.getElementById(tableName);
+        async function loadData(tableName) {
+            const tableBody = document.getElementById(tableName);
             tableBody.innerHTML = "";
-            types = tableBody.getAttribute("types");
-            var typesText = types.replaceAll("\'", "\"");
+            const types = tableBody.getAttribute("types");
+            const typesText = types.replaceAll("'", "\"");
 
-            var phpdata = new FormData();
+            const phpdata = new FormData();
             phpdata.append('table', tableName);
 
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "command/get.php", true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var data = JSON.parse(xhr.responseText);
-                    data.forEach(function(row) {
-                        var newRow = document.createElement("tr");
-                        for (var key in row) {
-                                let cellText = row[key];
-                                if (typeof cellText === "string" && cellText.length > 50) {
-                                    cellText = cellText.substring(0, 50) + "...";
-                                }
-                                newRow.innerHTML += "<td>" + cellText + "</td>";
-                        }
-                        newRow.innerHTML += "<td><img src=\"admin-image\/edit.png\" onclick='editRow(\"" + tableName + "\"," + row.ID + ", " + JSON.stringify(row) + ", " + typesText + ")' alt=\"edit\" title=\"Edit\" class=\"icon\" draggable=false></td>";
-                        newRow.innerHTML += "<td><img src=\"admin-image\/delete.png\" onclick='deleteRow(\"" + tableName + "\", " + row.ID + ")' alt=\"Delete\" title=\"Delete\" class=\"icon\" draggable=false></td>";
-                        tableBody.appendChild(newRow);
-                    });
+            const response = await fetch("command/get.php", {
+                method: "POST",
+                body: phpdata
+            });
+
+            if (!response.ok) {
+                console.error("Chyba při načítání dat");
+                return;
+            }
+
+            const data = await response.json();
+
+            for (const row of data) {
+                const newRow = document.createElement("tr");
+                let permissionData = "";
+
+                for (const key in row) {
+                    if (tableName === "profile" && (key === "password" || key === "display_name" || key === "icon"))
+                        continue;
+
+                    if (tableName === "profile" && key === "ID") {
+                        permissionData = await get_permissions(row[key]);
+                    }
+
+                    let cellText = row[key];
+                    if (typeof cellText === "string" && cellText.length > 50) {
+                        cellText = cellText.substring(0, 50) + "...";
+                    }
+                    newRow.innerHTML += `<td>${cellText}</td>`;
                 }
-            };
-            xhr.send(phpdata);
+
+                //console.log(permissionData);
+                if (permissionData != "")
+                    newRow.innerHTML += `<td><img src="admin-image/edit.png" onclick='editRow("table_access", 0, ${permissionData})' alt="edit" title="Edit" class="icon" draggable=false></td>`;
+                newRow.innerHTML += `<td><img src="admin-image/edit.png" onclick='editRow("${tableName}", ${row.ID}, ${JSON.stringify(row)}, ${typesText})' alt="edit" title="Edit" class="icon" draggable=false></td>`;
+                newRow.innerHTML += `<td><img src="admin-image/delete.png" onclick='deleteRow("${tableName}", ${row.ID})' alt="Delete" title="Delete" class="icon" draggable=false></td>`;
+                tableBody.appendChild(newRow);
+            }
         }
+
+        function get_permissions(profile_id) {
+            return new Promise((resolve, reject) => {
+                var phpdata = new FormData();
+                phpdata.append('profile_id', profile_id);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "command/get_access.php", true);
+                xhr.onload = function () {
+                    if (xhr.status == 200) {
+                        resolve(xhr.responseText);
+                    } else {
+                        reject(new Error("HTTP Chyba: " + xhr.status));
+                    }
+                }
+                xhr.send(phpdata);
+            });
+        }
+
         
         function editRow(tableName, id, data, types=[]) {
             var dialog = document.getElementById("edit");
@@ -308,7 +388,10 @@
                 i++;
 
                 input.id = `${key}`;
-                input.value = data[key];
+                if (!(tableName == "profile" && key == "password"))
+                    input.value = data[key];
+                else
+                    input.value = "";
                 if (input.type == "checkbox") {
                     if (data[key] == "1")
                         input.checked = true;
@@ -362,35 +445,69 @@
             }
         }
 
-        function saveRow() {
+        async function saveRow() {
             const inputContainer = document.getElementById('inputContainer');
             const inputs = inputContainer.querySelectorAll('input');
+            var access_arr = '[';
+            var access_arr2 = '[';
 
-            inputs.forEach(input => {
-                if (input.id != "ID") {
+            for (var input of inputs) {
+                if (input.id != "ID" && document.getElementById("edittable").value != "table_access") {
                     const id = input.getAttribute('data-id');
                     const value = input.getAttribute('data-value');
 
+                    if ( !(document.getElementById("edittable").value == "profile" && input.id == "password" && (input.value == "" || input.value == null)))
+                    {
+                        var phpdata = new FormData();
+                        phpdata.append('table', document.getElementById("edittable").value);
+                        phpdata.append('id', document.getElementById("editid").value);
+                        phpdata.append('name', input.id);
+                        if (input.getAttribute('type') == "checkbox") {
+                            phpdata.append('content', input.checked == true ? "1" : "0");
+                        } else 
+                        if (document.getElementById("edittable").value == "profile" && input.id == "password")
+                        {
+                            var hashed_string = await hash_passwd(input.value);
+                            phpdata.append('content', hashed_string);
+                        }
+                        else {
+                            phpdata.append('content', input.value);
+                        }
 
-                    var phpdata = new FormData();
-                    phpdata.append('table', document.getElementById("edittable").value);
-                    phpdata.append('id', document.getElementById("editid").value);
-                    phpdata.append('name', input.id);
-                    if (input.getAttribute('type') == "checkbox") {
-                        phpdata.append('content', input.checked == true ? "1" : "0");
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "command/edit.php", true);
+                        xhr.send(phpdata);
                     }
-                    else {
-                        phpdata.append('content', input.value);
-                    }
-
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("POST", "command/edit.php", true);
-                    xhr.send(phpdata);
                 }
-            });
+                if (document.getElementById("edittable").value == "table_access") {
+                    access_arr += '"' + input.id + '", ';
+                    if (input.type == "text")
+                        access_arr2 += '"' + input.value + '", ';
+                    else
+                        access_arr2 += '"' + (input.checked == true ? "1" : "0") + '", ';
+                }
+            }
+
+            if (document.getElementById("edittable").value == "table_access") {
+                var phpdata = new FormData();
+
+                access_arr = access_arr.slice(0, -2) + ']';
+                access_arr2 = access_arr2.slice(0, -2) + ']';
+
+                console.log(access_arr);
+                console.log(access_arr2);
+
+                phpdata.append('id_arr', access_arr);
+                phpdata.append('value_arr', access_arr2);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "command/set_access.php", true);
+                xhr.send(phpdata);
+            }
+
             setTimeout(() => {
                 document.getElementById("edit").close();
-                loadData(document.getElementById("edittable").value);
+                if (document.getElementById("edittable").value != "table_access")
+                    loadData(document.getElementById("edittable").value);
                 log("edited table " + document.getElementById("edittable").value + " by " + name);
             }, 500);
         }
@@ -428,18 +545,6 @@
                 addContainer.appendChild(input);
                 addContainer.appendChild(document.createElement('br'));
                 }
-            if (tableName == "profile") {
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.id = "password";
-                
-                const label = document.createElement('label');
-                label.textContent = "password";
-                
-                addContainer.appendChild(label);
-                addContainer.appendChild(input);
-                addContainer.appendChild(document.createElement('br'));
-            }
             dialog.showModal();
         }
 
@@ -455,11 +560,16 @@
                     names += input.id + ", ";
 
                     if (input.getAttribute('type') == "checkbox") {
-                        content += "\"" + (input.checked == "true" ? "1" : "0")+ "\", ";
+                        content += "\"" + (input.checked == true ? "1" : "0")+ "\", ";
                     } else if (input.getAttribute('type') == 'file') {
                         var file1 = input.files[0];
                         const base64 = await getBase64FromFile(file1);
                         content += "\"" + base64 + "\", ";
+                    } else 
+                    if (input.id == "password" && document.getElementById("addtable").value == "profile")
+                    {
+                        var hashed_string = await hash_passwd(input.value);
+                        content += "\"" + hashed_string + "\", ";
                     } else {
                         content += "\"" + input.value + "\", ";
                     }
@@ -475,8 +585,8 @@
             phpdata.append('names', names);
             phpdata.append('content', content);
 
-            console.log(names);
-            console.log(content);
+            //console.log(names);
+            //console.log(content);
 
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "command/add.php", true);
@@ -500,6 +610,24 @@
             });
         }
 
+        //get hash string
+        function hash_passwd(passwd) {
+            return new Promise((resolve, reject) => {
+                var phpdata = new FormData();
+                phpdata.append('passwd', passwd);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "command/hash_passwd.php", true);
+                xhr.onload = function () {
+                    if (xhr.status == 200) {
+                        resolve(xhr.responseText);
+                    } else {
+                        reject(new Error("HTTP Chyba: " + xhr.status));
+                    }
+                }
+                xhr.send(phpdata);
+            });
+        }
 
         //LOAD LOG
         function loadLog() {
