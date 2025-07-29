@@ -6,7 +6,7 @@
 
     //MYSQL DATABASE CONNECTION
     try {
-        $conn = new mysqli('localhost', 'root', '', 'admin_db');
+        $conn = new mysqli('localhost', 'name', 'passwd', 'admin_db');
     }
     catch(mysqli_sql_exception $e) {
         die("Database Connection Error, Server Error 500: </br>" . $e);

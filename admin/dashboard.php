@@ -113,7 +113,7 @@
                             var command = document.getElementById("console_input").value;
 
                             var phpdata = new FormData();
-                            phpdata.append('name', name);
+                            phpdata.append('name', "<?= $_POST["name"] ?>");
                             phpdata.append('passwd', "<?= $_POST["passwd"] ?>");
                             phpdata.append('command', command);
 
@@ -211,7 +211,7 @@
                             if (str_contains($tableName, "uploads") || str_contains($tableName, "log") || str_contains($tableName, "profile") || str_contains($tableName, "table_access"))
                                 continue;
 
-                            if (!$is_god) 
+                            if (!$is_god)
                             {
                                 if (!in_array($tableName, $access_arr))
                                     continue;
@@ -294,6 +294,8 @@
 
             const phpdata = new FormData();
             phpdata.append('table', tableName);
+            phpdata.append('name', "<?= $_POST["name"] ?>");
+            phpdata.append('passwd', "<?= $_POST["passwd"] ?>");
 
             const response = await fetch("command/get.php", {
                 method: "POST",
@@ -339,6 +341,8 @@
             return new Promise((resolve, reject) => {
                 var phpdata = new FormData();
                 phpdata.append('profile_id', profile_id);
+                phpdata.append('name', "<?= $_POST["name"] ?>");
+                phpdata.append('passwd', "<?= $_POST["passwd"] ?>");
 
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "command/get_access.php", true);
@@ -434,6 +438,8 @@
                 var phpdata = new FormData();
                 phpdata.append('table', tableName);
                 phpdata.append('id', id);
+                phpdata.append('name', "<?= $_POST["name"] ?>");
+                phpdata.append('passwd', "<?= $_POST["passwd"] ?>");
 
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "command/detele.php", true);
@@ -461,7 +467,10 @@
                         var phpdata = new FormData();
                         phpdata.append('table', document.getElementById("edittable").value);
                         phpdata.append('id', document.getElementById("editid").value);
-                        phpdata.append('name', input.id);
+                        phpdata.append('lname', input.id);
+                        phpdata.append('name', "<?= $_POST["name"] ?>");
+                        phpdata.append('passwd', "<?= $_POST["passwd"] ?>");
+
                         if (input.getAttribute('type') == "checkbox") {
                             phpdata.append('content', input.checked == true ? "1" : "0");
                         } else 
@@ -499,6 +508,8 @@
 
                 phpdata.append('id_arr', access_arr);
                 phpdata.append('value_arr', access_arr2);
+                phpdata.append('name', "<?= $_POST["name"] ?>");
+                phpdata.append('passwd', "<?= $_POST["passwd"] ?>");
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "command/set_access.php", true);
                 xhr.send(phpdata);
@@ -584,6 +595,8 @@
             phpdata.append('table', document.getElementById("addtable").value);
             phpdata.append('names', names);
             phpdata.append('content', content);
+            phpdata.append('name', "<?= $_POST["name"] ?>");
+            phpdata.append('passwd', "<?= $_POST["passwd"] ?>");
 
             //console.log(names);
             //console.log(content);
@@ -637,6 +650,8 @@
 
                 var phpdata = new FormData();
                 phpdata.append('table', 'log');
+                phpdata.append('name', "<?= $_POST["name"] ?>");
+                phpdata.append('passwd', "<?= $_POST["passwd"] ?>");
 
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "command/get.php", true);
@@ -666,6 +681,10 @@
             var tableBody = document.getElementById("fileList");
             tableBody.innerHTML = "";
 
+            var phpdata = new FormData();
+            phpdata.append('name', "<?= $_POST["name"] ?>");
+            phpdata.append('passwd', "<?= $_POST["passwd"] ?>");
+
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "command/list_files.php", true);
             xhr.onreadystatechange = function() {
@@ -680,7 +699,7 @@
                     });
                 }
             };
-            xhr.send();
+            xhr.send(phpdata);
         }
         //FILE UPLOAD
         function allowDrop(event) {
@@ -704,6 +723,8 @@
         function saveFileToServer() {
             var phpdata = new FormData();
             phpdata.append("fileToUpload", document.getElementById('file').files[0]);
+            phpdata.append('name', "<?= $_POST["name"] ?>");
+            phpdata.append('passwd', "<?= $_POST["passwd"] ?>");
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "command/change_file.php", true);
             xhr.send(phpdata);
@@ -720,7 +741,9 @@
 
             if (confirmed) {
                 var phpdata = new FormData();
-                phpdata.append("deleteFile", fileName); 
+                phpdata.append("deleteFile", fileName);
+                phpdata.append('name', "<?= $_POST["name"] ?>");
+                phpdata.append('passwd', "<?= $_POST["passwd"] ?>");
 
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "command/change_file.php", true);
