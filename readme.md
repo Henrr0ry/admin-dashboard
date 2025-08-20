@@ -14,6 +14,8 @@ sudo chmod 755 upload-files
 ### Linux mysql database enable null root password
 ```bash
 sudo mysql -u root -p
+```
+```mysql
 update mysql.user set plugin = 'mysql_native_password' where User='root';
 FLUSH PRIVILEGES;
 ```
@@ -29,3 +31,32 @@ FLUSH PRIVILEGES;
 - [x] user access to tables
 - [x] better file upload
 - [x] better security
+
+## Installation Documentation
+
+### 1) Copy files
+- copy ```/admin``` directory to your project
+
+### 2) Setup Database
+- add new tables to ```/admin/reset.sql```
+- then setup new account for your database or use login info from your provider
+
+```mysql
+CREATE USER 'new_username'@'localhost' IDENTIFIED BY 'new_password';
+
+GRANT ALL PRIVILEGES ON *.* TO 'new_username'@'localhost';
+
+FLUSH PRIVILEGES;
+```
+
+### 3) Update Connection
+- update login info in ```/admin/config.php``` and ```/admin/command/connect.php```
+
+### 4) Change Default Login
+- then on your site (for example ```localhost/admin```) should be visible admin dashboard
+- login with default credentials:
+```
+User: admin
+Password: admin
+```
+- change your password and if you need and new one
